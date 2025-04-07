@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/plugins/qsitg" >
+        <file>icon.png</file>
+    </qresource>
+</RCC>
