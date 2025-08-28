@@ -41,7 +41,7 @@ from qgis.PyQt.QtWidgets import (
 )
 
 from . import resources  # noqa
-from .config import ARCGISFEATURESERVERS, AUTH_SETTING_ID
+from .config import ARCGISFEATURESERVERS, AUTH_SETTING_ID, VECTORTILES
 from .qsitg_dialog import QsitgDialog
 
 
@@ -139,12 +139,28 @@ class Qsitg:
                         continue
                     settings.setValue(key, val)
                 settings.endGroup()
-            # Reload the browser GUI
-            self.iface.reloadConnections()
             self.log(
                 f"Successfully (re)created {len(ARCGISFEATURESERVERS)} Arcgis REST entries {with_login=}",
                 Qgis.Success,
             )
+
+        # Create or update the vector tiles backgrounds
+        settings = QgsSettings()
+        settings.beginGroup("connections/vector-tile/items")
+        for name, config in VECTORTILES.items():
+            group_name = f"SITG - {name}"
+            browser_items_names.append(group_name)
+            settings.beginGroup(group_name)
+            for key, val in config.items():
+                settings.setValue(key, val)
+            settings.endGroup()
+        self.log(
+            f"Successfully (re)created {len(VECTORTILES)} Vector tiles entries",
+            Qgis.Success,
+        )
+
+        # Reload the browser GUI
+        self.iface.reloadConnections()
 
         # Show the browser, collapse verything, and scroll to the first service
         browser = self.iface.mainWindow().findChild(QDockWidget, "Browser")
