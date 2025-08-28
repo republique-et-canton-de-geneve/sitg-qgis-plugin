@@ -32,9 +32,7 @@ from qgis.core import (
     QgsMessageLog,
     QgsSettings,
 )
-from qgis.PyQt.QtCore import (
-    Qt,
-)
+from qgis.PyQt.QtCore import Qt, QItemSelectionModel
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import (
     QAction,
@@ -100,6 +98,8 @@ class Qsitg:
             pass
 
     def run_reset_geoservices(self):
+        browser_items_names = []
+
         # Create or update the OAuth2 configuration
         auth_manager = QgsApplication.authManager()
         if auth_manager is None:
@@ -127,35 +127,41 @@ class Qsitg:
         )
 
         # Create or update the Arcgis REST entries in the browser
-        settings = QgsSettings()
-        settings.beginGroup("connections/arcgisfeatureserver/items")
-        for name, config in ARCGISFEATURESERVERS.items():
-            settings.beginGroup(name)
-            for key, val in config.items():
-                settings.setValue(key, val)
-            settings.endGroup()
-        # Reload the browser GUI
-        self.iface.reloadConnections()
-        self.log(
-            f"Successfully (re)created {len(ARCGISFEATURESERVERS)} Arcgis REST entries",
-            Qgis.Success,
-        )
+        for with_login in [True, False]:
+            settings = QgsSettings()
+            settings.beginGroup("connections/arcgisfeatureserver/items")
+            for name, config in ARCGISFEATURESERVERS.items():
+                group_name = f"SITG {'(authentifié) ' if with_login else ''}- {name}"
+                browser_items_names.append(group_name)
+                settings.beginGroup(group_name)
+                for key, val in config.items():
+                    if key == "authcfg" and not with_login:
+                        continue
+                    settings.setValue(key, val)
+                settings.endGroup()
+            # Reload the browser GUI
+            self.iface.reloadConnections()
+            self.log(
+                f"Successfully (re)created {len(ARCGISFEATURESERVERS)} Arcgis REST entries {with_login=}",
+                Qgis.Success,
+            )
 
         # Show the browser, collapse verything, and scroll to the first service
         browser = self.iface.mainWindow().findChild(QDockWidget, "Browser")
         treeview = browser.findChild(QTreeView)
-        model = treeview.model()
-        service_name = list(ARCGISFEATURESERVERS.keys())[0]
-        tree_items = model.match(
-            model.index(0, 0),
-            Qt.DisplayRole,
-            service_name,
-            flags=Qt.MatchRecursive,
-        )
-        treeview.collapseAll()
         treeview.clearSelection()
-        treeview.setCurrentIndex(tree_items[0])
-        treeview.scrollTo(tree_items[0])
+        treeview.collapseAll()
+        model = treeview.model()
+        for browser_item_name in browser_items_names:
+            tree_items = model.match(
+                model.index(0, 0),
+                Qt.DisplayRole,
+                browser_item_name,
+                flags=Qt.MatchRecursive | Qt.MatchExactly | Qt.MatchCaseSensitive,
+            )
+            for tree_item in tree_items:
+                treeview.scrollTo(tree_item)
+                treeview.selectionModel().select(tree_item, QItemSelectionModel.Select)
         browser.setVisible(True)
         browser.raise_()
 
