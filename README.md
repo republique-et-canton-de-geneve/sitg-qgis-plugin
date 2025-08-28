@@ -21,12 +21,12 @@ uv pip install -r requirements-dev.txt
 
 Puis dans VSCode, s'assurer d'activer l'environnement `.env` avec la commande `Python: Selec interpreter`.
 
-
 ## Packager
 
 TODO: faire ça dans une CI.
 
 En attendant, recompiler les resources (icons, fichiers ui...) puis zipper
+
 ```ps1
 # hors proxy
 

@@ -22,20 +22,35 @@
  ***************************************************************************/
 """
 
+import json
+
+from qgis.gui import QgisInterface
+from qgis.core import (
+    Qgis,
+    QgsApplication,
+    QgsAuthMethodConfig,
+    QgsMessageLog,
+    QgsSettings,
+)
+from qgis.PyQt.QtCore import (
+    Qt,
+)
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction
+from qgis.PyQt.QtWidgets import (
+    QAction,
+    QDockWidget,
+    QTreeView,
+)
 
-# Import the code for the dialog
+from . import resources  # noqa
+from .config import ARCGISFEATURESERVERS, AUTH_SETTING_ID
 from .qsitg_dialog import QsitgDialog
-
-# Initialize Qt resources from file resources.py
-from .resources import *
 
 
 class Qsitg:
     """QGIS Plugin Implementation."""
 
-    def __init__(self, iface):
+    def __init__(self, iface: QgisInterface):
         # Save reference to the QGIS interface
         self.iface = iface
         self.dialog = None
@@ -44,21 +59,35 @@ class Qsitg:
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
         icon = QIcon(":/plugins/qsitg/icon.png")
-        self.action = QAction(icon, "Reconfigurer", self.iface.mainWindow())
-        self.action.triggered.connect(self.run)
 
-        self.iface.addToolBarIcon(self.action)
-        self.iface.addPluginToMenu("SITG", self.action)
+        plugin_menu = self.iface.pluginMenu()
+        if plugin_menu is None:
+            raise RuntimeError("couldn't load plugin menu")
+        self.menu = plugin_menu.addMenu(icon, "SITG")
+
+        self.action_about = QAction(icon, "À propos...")
+        self.action_about.triggered.connect(self.run_about)
+        self.menu.addAction(self.action_about)
+
+        self.action_services = QAction("Reconfigurer les géoservices")
+        self.action_services.triggered.connect(self.run_reset_geoservices)
+        self.menu.addAction(self.action_services)
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
 
-        self.iface.removePluginMenu("SITG", self.action)
-        self.iface.removeToolBarIcon(self.action)
+        self.iface.pluginMenu().removeAction(self.menu.menuAction())
 
-    def run(self):
-        """Run method that performs all the real work"""
+    def log(self, message, level=Qgis.Info):
+        QgsMessageLog.logMessage(message, "qsitg", level)
 
+    def message(self, title, message, level=Qgis.Info):
+        messagebar = self.iface.messageBar()
+        if messagebar is None:
+            raise RuntimeError("couldn't load messagebar")
+        messagebar.pushMessage(title, message, level)
+
+    def run_about(self):
         # Create the dialog with elements (after translation) and keep reference
         # Only create GUI ONCE in callback, so that it will only load when the plugin is started
         if self.dialog is None:
@@ -67,8 +96,71 @@ class Qsitg:
         # Run the dialog
         self.dialog.show()
         result = self.dialog.exec_()
-        # See if OK was pressed
         if result:
-            # Do something useful here - delete the line containing pass and
-            # substitute with your code.
             pass
+
+    def run_reset_geoservices(self):
+        # Create or update the OAuth2 configuration
+        auth_manager = QgsApplication.authManager()
+        if auth_manager is None:
+            raise RuntimeError("couldn't load auth manager")
+        auth_config = QgsAuthMethodConfig()
+        auth_config.setId(AUTH_SETTING_ID)
+        auth_config.setName("Authentification Portal SITG")
+        auth_config.setMethod("OAuth2")
+        auth_config.setConfig(
+            "oauth2config",
+            json.dumps(
+                {
+                    "clientId": "BCtdSwCvntWSTiVe",
+                    "clientSecret": "ddec925293114097bdcd23432b3f953b",
+                    "redirectHost": "127.0.0.1",
+                    "redirectPort": "7070",
+                    "requestUrl": "https://app2.ge.ch/tergeoportal/sharing/rest/oauth2/authorize",
+                    "tokenUrl": "https://app2.ge.ch/tergeoportal/sharing/rest/oauth2/token",
+                }
+            ),
+        )
+        auth_manager.storeAuthenticationConfig(auth_config, overwrite=True)
+        self.log(
+            f"Successfully (re)created auth config {AUTH_SETTING_ID}", Qgis.Success
+        )
+
+        # Create or update the Arcgis REST entries in the browser
+        settings = QgsSettings()
+        settings.beginGroup("connections/arcgisfeatureserver/items")
+        for name, config in ARCGISFEATURESERVERS.items():
+            settings.beginGroup(name)
+            for key, val in config.items():
+                settings.setValue(key, val)
+            settings.endGroup()
+        # Reload the browser GUI
+        self.iface.reloadConnections()
+        self.log(
+            f"Successfully (re)created {len(ARCGISFEATURESERVERS)} Arcgis REST entries",
+            Qgis.Success,
+        )
+
+        # Show the browser, collapse verything, and scroll to the first service
+        browser = self.iface.mainWindow().findChild(QDockWidget, "Browser")
+        treeview = browser.findChild(QTreeView)
+        model = treeview.model()
+        service_name = list(ARCGISFEATURESERVERS.keys())[0]
+        tree_items = model.match(
+            model.index(0, 0),
+            Qt.DisplayRole,
+            service_name,
+            flags=Qt.MatchRecursive,
+        )
+        treeview.collapseAll()
+        treeview.clearSelection()
+        treeview.setCurrentIndex(tree_items[0])
+        treeview.scrollTo(tree_items[0])
+        browser.setVisible(True)
+        browser.raise_()
+
+        self.message(
+            "Succès !",
+            "Les geoservices du SITG ont été (re)configurés avec succès et sont prêts à être utilisés.",
+            Qgis.Success,
+        )
