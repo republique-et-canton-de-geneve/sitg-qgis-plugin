@@ -2,6 +2,26 @@
 
 Ce repo pour démontrer un plugin custom pour le SITG, qui pourrait p. ex. packager des configs par défaut pour les serveurs, des styles, un accès au catalogue web, etc...
 
+## Environnement de développement
+
+Pré-requis: UV et QGIS.
+
+```sh
+# créer un environnement virtuel préconfiguré pour QGIS grâce à https://github.com/GispoCoding/qgis-venv-creator
+uvx --from qgis-venv-creator create-qgis-venv.exe --venv-name .venv
+
+# installer l'outillage de développement
+uv pip install -r requirements-dev.txt
+
+# installer l'auto-formatteur
+# FIXME: désactivé car ça marche pas avec l'envionnment créé par qgis-venv-creator on dirait...
+# à la place on peut lancer manuellement `uvx run pre-commit run --all-files`
+# uv run pre-commit install
+```
+
+Puis dans VSCode, s'assurer d'activer l'environnement `.env` avec la commande `Python: Selec interpreter`.
+
+
 ## Packager
 
 TODO: faire ça dans une CI.
