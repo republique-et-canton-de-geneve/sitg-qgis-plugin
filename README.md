@@ -50,12 +50,6 @@ uv run --with PyQt5 pyrcc5 -o qsitg/resources.py qsitg/resources.qrc
 python -c "import shutil; shutil.make_archive('qsitg', 'zip', '.', 'qsitg')"
 ```
 
-## Ajouter au repo interne
+Copier le zip vers `V:\Donnees_Applicatives\GEOMATIQUE\INTERNET\SITG\QGIS\qsitg.zip` puis incrémenter la version dans `plugins.xml` (du même dossier).
 
-Un repo interne peut être hébergé sur le NAS.
-
-Ajouter un XML sur le NAS sous
-`V:\Donnees_Applicatives\GEOMATIQUE\INTERNET\SITG\QGIS\plugins.xml` (voir https://gis.stackexchange.com/a/486204/8512 pour un exemple)
-
-Ajouter le repo dans QGIS:
-`https://ge.ch/sitg/geodata/SITG/QGIS/plugins.xml`
+`plugins.xml` est un dépôt de plugins personalisé, un exemple de fichier est disponible [ici](https://gis.stackexchange.com/a/486204/8512).
