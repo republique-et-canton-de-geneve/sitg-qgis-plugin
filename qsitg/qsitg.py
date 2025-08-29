@@ -135,9 +135,14 @@ class Qsitg:
                 browser_items_names.append(group_name)
                 settings.beginGroup(group_name)
                 for key, val in config.items():
-                    if key == "authcfg" and not with_login:
-                        continue
                     settings.setValue(key, val)
+
+                if with_login:
+                    settings.setValue("authcfg", AUTH_SETTING_ID)
+                    # partial future workaround for missing `Vary: Authorization` header relying on the fact the server sets `Vary: Origin`
+                    # see https://github.com/qgis/QGIS/issues/63009
+                    settings.setValue("http-header", {"Origin": "qsitg-with-auth"})
+                    continue
                 settings.endGroup()
             self.log(
                 f"Successfully (re)created {len(ARCGISFEATURESERVERS)} Arcgis REST entries {with_login=}",
