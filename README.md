@@ -1,6 +1,10 @@
 # Plugin QGIS SITG
 
-Ce repo pour démontrer un plugin custom pour le SITG, qui pourrait p. ex. packager des configs par défaut pour les serveurs, des styles, un accès au catalogue web, etc...
+Plugin QGIS permettant de distribuer des resources pour le SITG.
+
+![screenshot](screenshot.png)
+
+Pour le moment, le plugin permet la configuration pour les endpoints vector.sitg.ge.ch, raster.sitg.ge.ch, thematique.sitg.ge.ch (avec et sans authentification OAuth2) et les tuiles vectorielles.
 
 ## Environnement de développement
 
