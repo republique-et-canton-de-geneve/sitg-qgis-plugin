@@ -6,6 +6,15 @@ Plugin QGIS permettant de distribuer des resources pour le SITG.
 
 Pour le moment, le plugin permet la configuration pour les endpoints vector.sitg.ge.ch, raster.sitg.ge.ch, thematique.sitg.ge.ch (avec et sans authentification OAuth2) et les tuiles vectorielles.
 
+## Installer
+
+Le plugin est installable via un dépôt dédié sur le NAS (en attendant release dans le dépôt d'extension officiel).
+
+1. Dans le gestionnaire d'extensions, onglet paramètre, ajouter le dépot `https://ge.ch/sitg/geodata/SITG/QGIS/plugins.xml`
+2. Rechercher le plugin `qsitg` et l'installer
+
+Si l'installation a fonctionné, un nouveau sous-menu devraît être apparu dans le menu `Extensions`.
+
 ## Environnement de développement
 
 Pré-requis: UV et QGIS.
