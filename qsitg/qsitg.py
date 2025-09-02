@@ -127,27 +127,18 @@ class Qsitg:
         )
 
         # Create or update the Arcgis REST entries in the browser
-        for with_login in [True, False]:
-            settings = QgsSettings()
-            settings.beginGroup("connections/arcgisfeatureserver/items")
-            for name, config in ARCGISFEATURESERVERS.items():
-                group_name = f"SITG {'(authentifié) ' if with_login else ''}- {name}"
-                browser_items_names.append(group_name)
-                settings.beginGroup(group_name)
-                for key, val in config.items():
-                    settings.setValue(key, val)
-
-                if with_login:
-                    settings.setValue("authcfg", AUTH_SETTING_ID)
-                    # partial future workaround for missing `Vary: Authorization` header relying on the fact the server sets `Vary: Origin`
-                    # see https://github.com/qgis/QGIS/issues/63009
-                    settings.setValue("http-header", {"Origin": "qsitg-with-auth"})
-                    continue
-                settings.endGroup()
-            self.log(
-                f"Successfully (re)created {len(ARCGISFEATURESERVERS)} Arcgis REST entries {with_login=}",
-                Qgis.Success,
-            )
+        settings = QgsSettings()
+        settings.beginGroup("connections/arcgisfeatureserver/items")
+        for name, config in ARCGISFEATURESERVERS.items():
+            browser_items_names.append(name)
+            settings.beginGroup(name)
+            for key, val in config.items():
+                settings.setValue(key, val)
+            settings.endGroup()
+        self.log(
+            f"Successfully (re)created {len(ARCGISFEATURESERVERS)} Arcgis REST entries",
+            Qgis.Success,
+        )
 
         # Create or update the vector tiles backgrounds
         settings = QgsSettings()

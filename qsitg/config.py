@@ -1,13 +1,31 @@
 AUTH_SETTING_ID = "sitgOA2"
 ARCGISFEATURESERVERS = {
-    "vector.sitg.ge.ch": {
+    "SITG - vector.sitg.ge.ch": {
         "url": "https://vector.sitg.ge.ch/arcgis/rest/services/Hosted/",
     },
-    "raster.sitg.ge.ch": {
+    "SITG - raster.sitg.ge.ch": {
         "url": "https://raster.sitg.ge.ch/arcgis/rest/services/",
     },
-    "thematic.sitg.ge.ch": {
+    "SITG - thematic.sitg.ge.ch": {
         "url": "https://thematic.sitg.ge.ch/arcgis/rest/services/",
+    },
+    # Pour les services authentifiés, vu que nos serveurs définissent "Vary: Origin" (au lieu de "Vary: Authorization") on définit
+    # un header Origin différent pour espérer que le cache ne soit pas partagé avec les services non authentifiés.
+    # Pour le moment ce n'est pas suffisant et le cache est quand même partagé, voir bug https://github.com/qgis/QGIS/issues/63009
+    "SITG (authentifié) - vector.sitg.ge.ch": {
+        "url": "https://vector.sitg.ge.ch/arcgis/rest/services/Hosted/",
+        "authcfg": AUTH_SETTING_ID,
+        "http-header": {"Origin": "qsitg-with-auth"},
+    },
+    "SITG (authentifié) - raster.sitg.ge.ch": {
+        "url": "https://raster.sitg.ge.ch/arcgis/rest/services/",
+        "authcfg": AUTH_SETTING_ID,
+        "http-header": {"Origin": "qsitg-with-auth"},
+    },
+    "SITG (authentifié) - thematic.sitg.ge.ch": {
+        "url": "https://thematic.sitg.ge.ch/arcgis/rest/services/",
+        "authcfg": AUTH_SETTING_ID,
+        "http-header": {"Origin": "qsitg-with-auth"},
     },
 }
 VECTORTILES = {
