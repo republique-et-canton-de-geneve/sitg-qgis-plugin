@@ -38,7 +38,7 @@ Puis dans VSCode, s'assurer d'activer l'environnement `.env` avec la commande `P
 
 TODO: faire ça dans une CI.
 
-En attendant, recompiler les resources (icons, fichiers ui...) puis zipper
+Pour faire une nouvelle version, éditer `metadata.txt` avec la nouvelle version, puis recompiler les resources (icons, fichiers ui...) puis zipper comme cela:
 
 ```ps1
 # hors proxy
@@ -50,6 +50,6 @@ uv run --with PyQt5 pyrcc5 -o qsitg/resources.py qsitg/resources.qrc
 python -c "import shutil; shutil.make_archive('qsitg', 'zip', '.', 'qsitg')"
 ```
 
-Copier le zip vers `V:\Donnees_Applicatives\GEOMATIQUE\INTERNET\SITG\QGIS\qsitg.zip` puis incrémenter la version dans `plugins.xml` (du même dossier).
+Copier le zip vers `V:\Donnees_Applicatives\GEOMATIQUE\INTERNET\SITG\QGIS\qsitg.zip` puis modifier la version dans `plugins.xml` (du même dossier) avec la même version que dans `metadata.txt`.
 
 `plugins.xml` est un dépôt de plugins personalisé, un exemple de fichier est disponible [ici](https://gis.stackexchange.com/a/486204/8512).

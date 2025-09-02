@@ -6,11 +6,11 @@
 name=qSITG
 qgisMinimumVersion=3.0
 description=TODO
-version=0.1
+version=0.2
 author=SITG
 email=sitg@etat.ge.ch
 
-about=TODO
+about=Ce plugin permet de préconfigurer QGIS avec les resources du SITG (Système d'Informations du Territoire du Canton de Genève).
 
 tracker=http://bugs
 repository=http://repo
