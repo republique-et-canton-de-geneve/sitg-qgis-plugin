@@ -100,6 +100,12 @@ class Qsitg:
     def run_reset_geoservices(self):
         browser_items_names = []
 
+        # Collapse all items in the browser (OAuth2 login is triggered if items are open when refreshing the browser)
+        browser = self.iface.mainWindow().findChild(QDockWidget, "Browser")
+        treeview = browser.findChild(QTreeView)
+        treeview.clearSelection()
+        treeview.collapseAll()
+
         # Create or update the OAuth2 configuration
         auth_manager = QgsApplication.authManager()
         if auth_manager is None:
@@ -158,11 +164,7 @@ class Qsitg:
         # Reload the browser GUI
         self.iface.reloadConnections()
 
-        # Show the browser, collapse verything, and scroll to the first service
-        browser = self.iface.mainWindow().findChild(QDockWidget, "Browser")
-        treeview = browser.findChild(QTreeView)
-        treeview.clearSelection()
-        treeview.collapseAll()
+        # Select freshly created items and show the browser
         model = treeview.model()
         for browser_item_name in browser_items_names:
             tree_items = model.match(
