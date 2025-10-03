@@ -6,7 +6,7 @@
 name=qSITG
 qgisMinimumVersion=3.0
 description=TODO
-version=0.2
+version=0.3
 author=SITG
 email=sitg@etat.ge.ch
 
