@@ -118,8 +118,8 @@ class Qsitg:
             "oauth2config",
             json.dumps(
                 {
-                    "clientId": "BCtdSwCvntWSTiVe",
-                    "clientSecret": "ddec925293114097bdcd23432b3f953b",
+                    "clientId": "ioxyFVH8KND5M2Iu",
+                    "grantFlow": 3,
                     "redirectHost": "127.0.0.1",
                     "redirectPort": "7070",
                     "requestUrl": "https://app2.ge.ch/tergeoportal/sharing/rest/oauth2/authorize",
