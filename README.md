@@ -32,7 +32,7 @@ uv pip install -r requirements-dev.txt
 # uv run pre-commit install
 ```
 
-Puis dans VSCode, s'assurer d'activer l'environnement `.env` avec la commande `Python: Selec interpreter`.
+Puis dans VSCode, s'assurer d'activer l'environnement `.env` avec la commande `Python: Select interpreter`.
 
 ## Packager
 
