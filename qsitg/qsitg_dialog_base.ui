@@ -6,34 +6,53 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>497</width>
-    <height>297</height>
+    <width>685</width>
+    <height>343</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>qSITG</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
-   <item row="2" column="0" colspan="2">
+   <item row="0" column="1">
+    <widget class="QWidget" name="widget" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>18</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Plugin officiel publié QGIS pour le Système d'Information du Territoire à Genève (SITG)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Ce plugin est publié par l'État de Genève et facilite la mise en place initiale puis la mise à jour des configurations des géoservices du SITG dans QGIS.&lt;/p&gt;&lt;p&gt;Consultez https://sitg.ge.ch/ pour plus d'information sur les données et géoservices et rendez vous sur https://sitg.ge.ch/contact si vous souhaitez nous contacer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::RichText</enum>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#880000;&quot;&gt;Attention ! &lt;/span&gt;&lt;span style=&quot; color:#880000;&quot;&gt;L&lt;/span&gt;&lt;span style=&quot; color:#880000;&quot;&gt;es services du SITG sont basés sur des solutions propriétaires qui ne sont encore que partiellement compatible avec QGIS et l'écosystème géomatique libre.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#880000;&quot;&gt;De nombreux problèmes de performance ou de fiabilité sont connus et l'utilisation de QGIS comme client pour consommer les geoservices doit être considéré comme expérimentale.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#880000;&quot;&gt;Pour les travaux critiques, nous vous recommandons de vous orienter davantage vers les archives opendata disponibles depuis le catalogue web.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="1">
     <widget class="QDialogButtonBox" name="button_box">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
       <set>QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Plugin officiel publié QGIS pour le Système d'Information du Territoire à Genève (SITG)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;Ce plugin est publié par l'État de Genève et facilite la mise en place initiale puis la mise à jour des configurations des géoservices du SITG dans QGIS.&lt;/p&gt;&lt;p&gt;Consultez https://sitg.ge.ch/ pour plus d'information sur les données et géoservices et rendez vous sur https://sitg.ge.ch/contact si vous souhaitez nous contacer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="textFormat">
-      <enum>Qt::RichText</enum>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
      </property>
     </widget>
    </item>
