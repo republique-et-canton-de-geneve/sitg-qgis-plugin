@@ -23,6 +23,7 @@
 """
 
 import json
+import os
 
 from qgis.gui import QgisInterface
 from qgis.core import (
@@ -40,7 +41,6 @@ from qgis.PyQt.QtWidgets import (
     QTreeView,
 )
 
-from . import resources  # noqa
 from .config import ARCGISFEATURESERVERS, AUTH_SETTING_ID, VECTORTILES
 from .qsitg_dialog import QsitgDialog
 
@@ -56,7 +56,7 @@ class Qsitg:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
-        icon = QIcon(":/plugins/qsitg/icon.png")
+        icon = QIcon(os.path.join(os.path.dirname(__file__), "icon.png"))
 
         plugin_menu = self.iface.pluginMenu()
         if plugin_menu is None:
