@@ -56,7 +56,7 @@ class Qsitg:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
-        icon = QIcon(os.path.join(os.path.dirname(__file__), "icon.png"))
+        icon = QIcon(os.path.join(os.path.dirname(__file__), "resources", "icon.png"))
 
         plugin_menu = self.iface.pluginMenu()
         if plugin_menu is None:
