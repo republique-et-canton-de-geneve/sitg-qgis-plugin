@@ -15,9 +15,11 @@ En attendant sa mise à disposition via le dépôt d'extension officiel de QGIS,
 
 Si l'installation a fonctionné, un nouveau sous-menu devraît être apparu dans le menu `Extensions`.
 
-## Aide / en cas de problème
+## Contact / aide
 
-N'hésitez pas à ouvrir une issue github pour signaler un problème.
+Si vous rencontrez un problème ou que vous avez une suggestion pour le présent plugin, n'hésitez pas à ouvrir une issue github pour signaler un problème.
+
+Pour les questions générales relatives au SITG (données, services, etc.) référez-vous à la page contact: https://sitg.ge.ch/contact
 
 ## Contribuer
 
@@ -25,7 +27,12 @@ Les contributions au plugin sont bienvenues sous forme de pull request. Avant de
 
 ### Environnement de développement
 
-Pré-requis: UV et QGIS.
+<details>
+<summary>Voir les recommandations pour configurer un environnement de développement  (applicable à tout plugin QGIS)</summary>
+
+Voici les étapes pour configurer un environnement de développement pour ce plugin permettant l'autocomplétion dans l'IDE, le formattage automatique du code ainsi que le rechargement dynamique du plugin sans redémarrer QGIS
+
+Pré-requis: [UV](https://docs.astral.sh/uv/getting-started/installation/) et QGIS.
 
 ```sh
 # créer un environnement virtuel préconfiguré pour QGIS grâce à https://github.com/GispoCoding/qgis-venv-creator
@@ -35,12 +42,19 @@ uvx --from qgis-venv-creator create-qgis-venv.exe --venv-name .venv
 uv pip install -r requirements-dev.txt
 
 # installer l'auto-formatteur
-# FIXME: désactivé car ça marche pas avec l'envionnment créé par qgis-venv-creator on dirait...
-# à la place on peut lancer manuellement `uvx run pre-commit run --all-files`
-# uv run pre-commit install
+uv run pre-commit install
 ```
 
-Puis dans VSCode, s'assurer d'activer l'environnement `.env` avec la commande `Python: Selec interpreter`.
+Puis dans VSCode, s'assurer d'activer l'environnement `.env` avec la commande `Python: Select interpreter`.
+
+Pour recharger le code dynamiquement grâce au plugin `Plugin reloader`, il faut créer un lien symbolique depuis votre dossier de plugins QGIS vers le dossier `qsitg` du code.
+
+```sh
+# à lancer dans l'invite de commande en mode administrateur
+mklink /D %appdata%\QGIS\QGIS3\profiles\default\python\plugins\qsitg C:\chemin\vers\dossiergit\qsitg
+```
+
+</details>
 
 ### Packager
 
