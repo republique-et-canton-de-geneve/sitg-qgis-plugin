@@ -5,7 +5,7 @@ version=0.0
 experimental=False
 
 # mandatory metadata
-name=qSITG
+name=qSITG - beta
 qgisMinimumVersion=3.0
 description=Plugin facilitant l'utilisation des services du Système d'Informations du Territoire du Canton de Genève (SITG) dans QGIS.
 author=République et canton de Genève

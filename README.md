@@ -1,10 +1,17 @@
-# Plugin QGIS SITG
+# Plugin QGIS SITG ![status: beta](https://img.shields.io/badge/status-beta-orange)
 
 Plugin QGIS permettant de distribuer des resources pour le SITG.
 
 ![screenshot](screenshot.png)
 
-Pour le moment, le plugin permet la configuration pour les endpoints vector.sitg.ge.ch, raster.sitg.ge.ch, thematique.sitg.ge.ch, à chaque fois avec ou sans authentification OAuth2, ainsi que les tuiles vectorielles.
+Pour le moment, le plugin permet la configuration pour les services **vector.sitg.ge.ch**, **raster.sitg.ge.ch** et **thematique.sitg.ge.ch**. Il ajoute également les fonds de plan officiels SITG sous forme de **tuiles vectorielles**. Il gère également l'authentification pour l'accès à des données sécuriées pour les personnes ayant un compte le permettant.
+
+> [!CAUTION]
+> Attention ! Les services du SITG sont basés sur des solutions propriétaires qui ne sont encore que partiellement compatible avec QGIS et l'écosystème géomatique libre.
+>
+> De nombreux problèmes de performance ou de fiabilité sont connus et l'utilisation de QGIS comme client pour consommer les geoservices doit être considéré comme expérimentale.
+>
+> Pour les travaux critiques, nous vous recommandons de vous orienter davantage vers les archives opendata disponibles depuis le [catalogue web](https://sitg.ge.ch).
 
 ## Installer
 
