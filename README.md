@@ -4,18 +4,26 @@ Plugin QGIS permettant de distribuer des resources pour le SITG.
 
 ![screenshot](screenshot.png)
 
-Pour le moment, le plugin permet la configuration pour les endpoints vector.sitg.ge.ch, raster.sitg.ge.ch, thematique.sitg.ge.ch (avec et sans authentification OAuth2) et les tuiles vectorielles.
+Pour le moment, le plugin permet la configuration pour les endpoints vector.sitg.ge.ch, raster.sitg.ge.ch, thematique.sitg.ge.ch, à chaque fois avec ou sans authentification OAuth2, ainsi que les tuiles vectorielles.
 
 ## Installer
 
-Le plugin est installable via un dépôt dédié sur le NAS (en attendant release dans le dépôt d'extension officiel).
+En attendant sa mise à disposition via le dépôt d'extension officiel de QGIS, le plus est installable via un dépôt temporaire dédié.
 
-1. Dans le gestionnaire d'extensions, onglet paramètre, ajouter le dépot `https://ge.ch/sitg/geodata/SITG/QGIS/plugins.xml`
+1. Dans le gestionnaire d'extensions, onglet paramètre, ajouter le dépot `https://github.com/republique-et-canton-de-geneve/qgis_plugin_sitg/releases/latest/download/plugins.xml`
 2. Rechercher le plugin `qsitg` et l'installer
 
 Si l'installation a fonctionné, un nouveau sous-menu devraît être apparu dans le menu `Extensions`.
 
-## Environnement de développement
+## Aide / en cas de problème
+
+N'hésitez pas à ouvrir une issue github pour signaler un problème.
+
+## Contribuer
+
+Les contributions au plugin sont bienvenues sous forme de pull request. Avant de vous lancer dans un développement complexe, prenez contact avec nous en créant une issue afin de discuter de l'idée, pour s'assurer que la contribution puisse être intégrée au plugin officiel.
+
+### Environnement de développement
 
 Pré-requis: UV et QGIS.
 
@@ -32,24 +40,8 @@ uv pip install -r requirements-dev.txt
 # uv run pre-commit install
 ```
 
-Puis dans VSCode, s'assurer d'activer l'environnement `.env` avec la commande `Python: Select interpreter`.
+Puis dans VSCode, s'assurer d'activer l'environnement `.env` avec la commande `Python: Selec interpreter`.
 
-## Packager
+### Packager
 
-TODO: faire ça dans une CI.
-
-Pour faire une nouvelle version, éditer `metadata.txt` avec la nouvelle version, puis recompiler les resources (icons, fichiers ui...) puis zipper comme cela:
-
-```ps1
-# hors proxy
-
-# recompiler les resources
-uv run --with PyQt5 pyrcc5 -o qsitg/resources.py qsitg/resources.qrc
-
-# créer le zip
-python -c "import shutil; shutil.make_archive('qsitg', 'zip', '.', 'qsitg')"
-```
-
-Copier le zip vers `V:\Donnees_Applicatives\GEOMATIQUE\INTERNET\SITG\QGIS\qsitg.zip` puis modifier la version dans `plugins.xml` (du même dossier) avec la même version que dans `metadata.txt`.
-
-`plugins.xml` est un dépôt de plugins personalisé, un exemple de fichier est disponible [ici](https://gis.stackexchange.com/a/486204/8512).
+Pour déclencher le packaging et la release d'une nouvelle version, créer une release dans github. Le nom de la release doit suivre les conventions de version sémantique. Les pre-releases (p. ex. `1.2.3-alpha1`) seront automatiquement packagées comme expérimentales.
