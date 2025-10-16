@@ -25,7 +25,6 @@
 import json
 import os
 
-from qgis.gui import QgisInterface
 from qgis.core import (
     Qgis,
     QgsApplication,
@@ -33,7 +32,8 @@ from qgis.core import (
     QgsMessageLog,
     QgsSettings,
 )
-from qgis.PyQt.QtCore import Qt, QItemSelectionModel
+from qgis.gui import QgisInterface
+from qgis.PyQt.QtCore import QItemSelectionModel, Qt
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import (
     QAction,
