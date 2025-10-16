@@ -38,6 +38,7 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import (
     QAction,
     QDockWidget,
+    QMessageBox,
     QTreeView,
 )
 
@@ -68,7 +69,7 @@ class Qsitg:
         self.menu.addAction(self.action_about)
 
         self.action_services = QAction("Reconfigurer les géoservices")
-        self.action_services.triggered.connect(self.run_reset_geoservices)
+        self.action_services.triggered.connect(self.run_prompt_reset_geoservices)
         self.menu.addAction(self.action_services)
 
     def unload(self):
@@ -97,7 +98,18 @@ class Qsitg:
         if result:
             pass
 
-    def run_reset_geoservices(self):
+    def run_prompt_reset_geoservices(self):
+        msgBox = QMessageBox(
+            QMessageBox.Question,
+            "Configuration des géoservices du SITG",
+            "Disposez-vous d'un compte GINA/E-Demarches vous permettant d'accéder à des données en accès restreint ? Répondez non si vous n'êtes pas sûr(e).",
+            QMessageBox.Yes | QMessageBox.No,
+        )
+        msgBox.setDefaultButton(QMessageBox.No)
+        resp = msgBox.exec_()
+        self.do_reset_geoservices(with_auth=resp == QMessageBox.Yes)
+
+    def do_reset_geoservices(self, with_auth: bool):
         browser_items_names = []
 
         # Collapse all items in the browser (OAuth2 login is triggered if items are open when refreshing the browser)
@@ -137,10 +149,16 @@ class Qsitg:
         settings.beginGroup("connections/arcgisfeatureserver/items")
         for name, config in ARCGISFEATURESERVERS.items():
             browser_items_names.append(name)
-            settings.beginGroup(name)
-            for key, val in config.items():
-                settings.setValue(key, val)
-            settings.endGroup()
+            if ("authcfg" in config) == with_auth:
+                # include it
+                settings.beginGroup(name)
+                for key, val in config.items():
+                    settings.setValue(key, val)
+                settings.endGroup()
+            else:
+                # remove it
+                settings.remove(name)
+
         self.log(
             f"Successfully (re)created {len(ARCGISFEATURESERVERS)} Arcgis REST entries",
             Qgis.Success,
