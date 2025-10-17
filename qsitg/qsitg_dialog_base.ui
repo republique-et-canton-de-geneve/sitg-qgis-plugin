@@ -6,20 +6,36 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>685</width>
-    <height>343</height>
+    <width>673</width>
+    <height>455</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>qSITG</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
+   <property name="horizontalSpacing">
+    <number>18</number>
+   </property>
    <item row="0" column="1">
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
        <number>18</number>
       </property>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
@@ -43,6 +59,19 @@
         </property>
        </widget>
       </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </widget>
    </item>
@@ -62,7 +91,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>resources/icon.png</pixmap>
+      <pixmap>resources/etat_geneve.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
