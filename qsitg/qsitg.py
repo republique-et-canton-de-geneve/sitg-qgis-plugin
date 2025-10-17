@@ -155,6 +155,7 @@ class Qsitg:
                     "redirectPort": "7070",
                     "requestUrl": "https://app2.ge.ch/tergeoportal/sharing/rest/oauth2/authorize",
                     "tokenUrl": "https://app2.ge.ch/tergeoportal/sharing/rest/oauth2/token",
+                    "persistToken": True,
                 }
             ),
         )
