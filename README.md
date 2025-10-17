@@ -17,7 +17,7 @@ Pour le moment, le plugin permet la configuration pour les services **vector.sit
 
 En attendant sa mise à disposition via le dépôt d'extension officiel de QGIS, le plus est installable via un dépôt temporaire dédié.
 
-1. Dans le gestionnaire d'extensions, onglet paramètre, ajouter le dépot `https://github.com/republique-et-canton-de-geneve/qgis_plugin_sitg/releases/latest/download/plugins.xml`
+1. Dans le gestionnaire d'extensions, onglet paramètre, ajouter le dépot `https://github.com/republique-et-canton-de-geneve/sitg-qgis-plugin/releases/latest/download/plugins.xml`
 2. Rechercher le plugin `qsitg` et l'installer
 
 Si l'installation a fonctionné, un nouveau sous-menu devraît être apparu dans le menu `Extensions`.
