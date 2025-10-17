@@ -11,13 +11,13 @@ description=Plugin facilitant l'utilisation des services du Système d'Informati
 author=République et canton de Genève
 email=sitg@etat.ge.ch
 about=Ce plugin permet de préconfigurer QGIS avec les resources du SITG: fonds de plan, geoservices rasters et vectoriels, avec ou sans authentification. Son installation est recommandée aux utilisateurs réguliers du SITG dans QGIS, tant en interne de l'administration qu'en externe.
-tracker=https://github.com/republique-et-canton-de-geneve/qgis_plugin_sitg/issues
-repository=https://github.com/republique-et-canton-de-geneve/qgis_plugin_sitg
+tracker=https://github.com/republique-et-canton-de-geneve/sitg-qgis-plugin/issues
+repository=https://github.com/republique-et-canton-de-geneve/sitg-qgis-plugin
 
 # optional metadata
 hasProcessingProvider=no
 tags=sitg,genève,geneve,suisse,switzerland
-homepage=https://github.com/republique-et-canton-de-geneve/qgis_plugin_sitg
+homepage=https://github.com/republique-et-canton-de-geneve/sitg-qgis-plugin
 category=Plugins
 icon=resources/icon.png
 deprecated=False
