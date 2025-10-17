@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>673</width>
+    <width>719</width>
     <height>455</height>
    </rect>
   </property>
@@ -39,7 +39,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Plugin officiel publié QGIS pour le Système d'Information du Territoire à Genève (SITG)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Ce plugin est publié par l'État de Genève et facilite la mise en place initiale puis la mise à jour des configurations des géoservices du SITG dans QGIS.&lt;/p&gt;&lt;p&gt;Consultez https://sitg.ge.ch/ pour plus d'information sur les données et géoservices et rendez vous sur https://sitg.ge.ch/contact si vous souhaitez nous contacer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Plugin officiel du Système d'Information du Territoire à Genève &lt;/span&gt;&lt;span style=&quot; font-weight:600; color:#880000;&quot;&gt;[version beta]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Ce plugin est publié par l'État de Genève et facilite la mise en place initiale puis la mise à jour des configurations des géoservices du SITG dans QGIS.&lt;/p&gt;&lt;p&gt;Consultez &lt;a href=&quot;https://sitg.ge.ch&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://sitg.ge.ch&lt;/span&gt;&lt;/a&gt; pour plus d'information sur les données et géoservices et rendez vous sur &lt;a href=&quot;https://sitg.ge.ch/contact&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://sitg.ge.ch/contact&lt;/span&gt;&lt;/a&gt; si vous souhaitez nous contacer.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Important !&lt;/span&gt; L'utilisation des données du SITG est soumise à &lt;a href=&quot;https://sitg.ge.ch/ressources/conditions-utilisation-donnees&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;conditions&lt;/span&gt;&lt;/a&gt;. Le niveau d'accès de chaque données est décrit dans le &lt;a href=&quot;https://sitg.ge.ch&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;catalogue web&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="textFormat">
          <enum>Qt::RichText</enum>
@@ -47,14 +47,20 @@
         <property name="wordWrap">
          <bool>true</bool>
         </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#880000;&quot;&gt;Attention ! &lt;/span&gt;&lt;span style=&quot; color:#880000;&quot;&gt;L&lt;/span&gt;&lt;span style=&quot; color:#880000;&quot;&gt;es services du SITG sont basés sur des solutions propriétaires qui ne sont encore que partiellement compatible avec QGIS et l'écosystème géomatique libre.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#880000;&quot;&gt;De nombreux problèmes de performance ou de fiabilité sont connus et l'utilisation de QGIS comme client pour consommer les geoservices doit être considéré comme expérimentale.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#880000;&quot;&gt;Pour les travaux critiques, nous vous recommandons de vous orienter davantage vers les archives opendata disponibles depuis le catalogue web.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#880000;&quot;&gt;Attention ! &lt;/span&gt;&lt;span style=&quot; color:#880000;&quot;&gt;Les services du SITG sont basés sur des solutions propriétaires qui ne sont encore que partiellement compatible avec QGIS et l'écosystème géomatique libre.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#880000;&quot;&gt;De nombreux problèmes de performance ou de fiabilité sont connus et l'utilisation de QGIS comme client pour consommer les geoservices du SITG doit être considérée comme expérimentale.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#880000;&quot;&gt;Pour les travaux critiques, nous vous recommandons de vous orienter davantage vers les données en téléchargement disponibles depuis le &lt;/span&gt;&lt;a href=&quot;https://sitg.ge.ch/search?category=data&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;catalogue web&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; color:#880000;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+        <property name="openExternalLinks">
          <bool>true</bool>
         </property>
        </widget>
