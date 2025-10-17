@@ -53,6 +53,8 @@ class Qsitg:
         # Save reference to the QGIS interface
         self.iface = iface
         self.dialog = None
+        self.settings = QgsSettings()
+        self.settings.beginGroup("qsitg")
 
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
@@ -71,6 +73,15 @@ class Qsitg:
         self.action_services = QAction("Reconfigurer les géoservices")
         self.action_services.triggered.connect(self.run_prompt_reset_geoservices)
         self.menu.addAction(self.action_services)
+
+        if not self.settings.contains("dont_show_again"):
+            # show on startup
+            self.iface.initializationCompleted.connect(self.run_about)
+
+            # show after install
+            if not self.settings.contains("is_first_run"):
+                self.settings.setValue("is_first_run", True)
+                self.run_about()
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
@@ -93,10 +104,18 @@ class Qsitg:
             self.dialog = QsitgDialog()
 
         # Run the dialog
+        self.dialog.dont_show_again.setChecked(
+            self.settings.contains("dont_show_again")
+        )
         self.dialog.show()
-        result = self.dialog.exec_()
-        if result:
-            pass
+        self.dialog.exec_()
+
+        # Store don't show again
+        QgsMessageLog.logMessage(f"{self.dialog.dont_show_again.isChecked()=}")
+        if self.dialog.dont_show_again.isChecked():
+            self.settings.setValue("dont_show_again", True)
+        else:
+            self.settings.remove("dont_show_again")
 
     def run_prompt_reset_geoservices(self):
         msgBox = QMessageBox(
