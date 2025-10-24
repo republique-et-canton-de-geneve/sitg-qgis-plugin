@@ -24,6 +24,7 @@
 
 import json
 import os
+import webbrowser
 
 from qgis.core import (
     Qgis,
@@ -60,6 +61,9 @@ class Qsitg:
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
         icon = QIcon(os.path.join(os.path.dirname(__file__), "resources", "icon.png"))
+        web_icon = QIcon(
+            os.path.join(os.path.dirname(__file__), "resources", "catalog.png")
+        )
 
         plugin_menu = self.iface.pluginMenu()
         if plugin_menu is None:
@@ -69,6 +73,12 @@ class Qsitg:
         self.action_about = QAction(icon, "À propos...")
         self.action_about.triggered.connect(self.run_about)
         self.menu.addAction(self.action_about)
+
+        self.action_catalog = QAction(
+            web_icon, "Ouvrir le catalogue dans le navigateur"
+        )
+        self.action_catalog.triggered.connect(self.run_open_catalog)
+        self.menu.addAction(self.action_catalog)
 
         self.action_services = QAction("Reconfigurer les géoservices")
         self.action_services.triggered.connect(self.run_prompt_reset_geoservices)
@@ -116,6 +126,9 @@ class Qsitg:
             self.settings.setValue("dont_show_again", True)
         else:
             self.settings.remove("dont_show_again")
+
+    def run_open_catalog(self):
+        webbrowser.open_new_tab("https://sitg.ge.ch")
 
     def run_prompt_reset_geoservices(self):
         msgBox = QMessageBox(
