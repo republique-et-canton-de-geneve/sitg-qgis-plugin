@@ -90,8 +90,10 @@ class Qsitg:
 
             # show after install
             if not self.settings.contains("is_first_run"):
-                self.settings.setValue("is_first_run", True)
+                self.settings.setValue("is_first_run", "first_run_done")
                 self.run_about()
+                # then directly run the reset geoservices dialog
+                self.run_prompt_reset_geoservices()
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
