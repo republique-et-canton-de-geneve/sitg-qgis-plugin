@@ -40,11 +40,15 @@ from qgis.PyQt.QtWidgets import (
     QAction,
     QDockWidget,
     QMessageBox,
+    QSplashScreen,
     QTreeView,
 )
 
 from .config import ARCGISFEATURESERVERS, AUTH_SETTING_ID, VECTORTILES
 from .qsitg_dialog import QsitgDialog
+
+KEY_CONFIG_DONE = "configuration_done_flag"
+KEY_DONT_SHOW_AGAIN = "dont_show_again"
 
 
 class Qsitg:
@@ -70,29 +74,35 @@ class Qsitg:
             raise RuntimeError("couldn't load plugin menu")
         self.menu = plugin_menu.addMenu(icon, "SITG (beta)")
 
-        self.action_about = QAction(icon, "À propos...")
+        self.action_about = QAction(icon, "À propos du SITG...")
         self.action_about.triggered.connect(self.run_about)
         self.menu.addAction(self.action_about)
 
         self.action_catalog = QAction(
-            web_icon, "Ouvrir le catalogue dans le navigateur"
+            web_icon, "Ouvrir le catalogue du SITG dans le navigateur"
         )
         self.action_catalog.triggered.connect(self.run_open_catalog)
         self.menu.addAction(self.action_catalog)
 
-        self.action_services = QAction("Reconfigurer les géoservices")
+        self.action_services = QAction("Reconfigurer les géoservices du SITG")
         self.action_services.triggered.connect(self.run_prompt_reset_geoservices)
         self.menu.addAction(self.action_services)
 
-        if not self.settings.contains("dont_show_again"):
-            # show on startup
-            self.iface.initializationCompleted.connect(self.run_about)
-
-            # show after install
-            if not self.settings.contains("is_first_run"):
-                self.settings.setValue("is_first_run", "first_run_done")
+        if self.is_starting_up():
+            # if initializing, we do not show the gui right away, but wait until init is complete
+            self.log("is starting up: gui deferred")
+            if not self.settings.contains(KEY_DONT_SHOW_AGAIN):
+                self.iface.initializationCompleted.connect(self.run_about)
+            if not self.settings.contains(KEY_CONFIG_DONE):
+                self.iface.initializationCompleted.connect(
+                    self.run_prompt_reset_geoservices
+                )
+        else:
+            # otherwise (right after manual install), we show the gui right away
+            self.log("initialization already done: we show right away")
+            if not self.settings.contains(KEY_DONT_SHOW_AGAIN):
                 self.run_about()
-                # then directly run the reset geoservices dialog
+            if not self.settings.contains(KEY_CONFIG_DONE):
                 self.run_prompt_reset_geoservices()
 
     def unload(self):
@@ -102,6 +112,13 @@ class Qsitg:
 
     def log(self, message, level=Qgis.Info):
         QgsMessageLog.logMessage(message, "qsitg", level)
+
+    def is_starting_up(self):
+        """hacky way to retrieve if QGIS is still starting up"""
+        for widget in QgsApplication.topLevelWidgets():
+            if isinstance(widget, QSplashScreen) and widget.isVisible():
+                return True
+        return False
 
     def message(self, title, message, level=Qgis.Info):
         messagebar = self.iface.messageBar()
@@ -117,7 +134,7 @@ class Qsitg:
 
         # Run the dialog
         self.dialog.dont_show_again.setChecked(
-            self.settings.contains("dont_show_again")
+            self.settings.contains(KEY_DONT_SHOW_AGAIN)
         )
         self.dialog.show()
         self.dialog.exec_()
@@ -125,9 +142,9 @@ class Qsitg:
         # Store don't show again
         QgsMessageLog.logMessage(f"{self.dialog.dont_show_again.isChecked()=}")
         if self.dialog.dont_show_again.isChecked():
-            self.settings.setValue("dont_show_again", True)
+            self.settings.setValue(KEY_DONT_SHOW_AGAIN, True)
         else:
-            self.settings.remove("dont_show_again")
+            self.settings.remove(KEY_DONT_SHOW_AGAIN)
 
     def run_open_catalog(self):
         webbrowser.open_new_tab("https://sitg.ge.ch")
@@ -136,7 +153,7 @@ class Qsitg:
         msgBox = QMessageBox(
             QMessageBox.Question,
             "Configuration des géoservices du SITG",
-            "Disposez-vous d'un compte GINA/E-Demarches vous permettant d'accéder à des données en accès restreint ? Répondez non si vous n'êtes pas sûr(e).",
+            "Disposez-vous d'un compte GINA/E-Demarches vous permettant d'accéder à des données du SITG en accès restreint ? Répondez non si vous n'êtes pas sûr(e).",
             QMessageBox.Yes | QMessageBox.No,
         )
         msgBox.setDefaultButton(QMessageBox.No)
@@ -237,3 +254,4 @@ class Qsitg:
             "Les geoservices du SITG ont été (re)configurés avec succès et sont prêts à être utilisés.",
             Qgis.Success,
         )
+        self.settings.setValue(KEY_CONFIG_DONE, "ok")
