@@ -183,7 +183,6 @@ class Qsitg:
                 {
                     "clientId": "ioxyFVH8KND5M2Iu",
                     "grantFlow": 3,
-                    "redirectHost": "127.0.0.1",
                     "redirectPort": "7070",
                     "requestUrl": "https://app2.ge.ch/tergeoportal/sharing/rest/oauth2/authorize",
                     "tokenUrl": "https://app2.ge.ch/tergeoportal/sharing/rest/oauth2/token",
