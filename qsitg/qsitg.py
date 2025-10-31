@@ -153,7 +153,7 @@ class Qsitg:
         msgBox = QMessageBox(
             QMessageBox.Question,
             "Configuration des géoservices du SITG",
-            "Disposez-vous d'un compte GINA/E-Demarches vous permettant d'accéder à des données du SITG en accès restreint ? Répondez non si vous n'êtes pas sûr(e).",
+            "<p>Disposez-vous d'un compte GINA/E-Demarches vous permettant d'accéder à des données du SITG en accès restreint ?</p><p>Vous pourrez toujours changer cette option plus tard en choisissant <i>Reconfigurer les services</i> dans le menu de l'extension.</p>",
             QMessageBox.Yes | QMessageBox.No,
         )
         msgBox.setDefaultButton(QMessageBox.No)
