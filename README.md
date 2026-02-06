@@ -1,10 +1,15 @@
 # Plugin QGIS SITG ![status: beta](https://img.shields.io/badge/status-beta-orange)
 
-Plugin QGIS permettant de distribuer des resources pour le SITG.
+Ce plugin permet de faciliter l'utilisation des services du Système d'Informations du Territoire du Canton de Genève (SITG) dans QGIS.
 
 ![screenshot](screenshot.png)
 
-Pour le moment, le plugin permet la configuration pour les services **vector.sitg.ge.ch**, **raster.sitg.ge.ch** et **thematique.sitg.ge.ch**. Il ajoute également les fonds de plan officiels SITG sous forme de **tuiles vectorielles**. Il gère également l'authentification pour l'accès à des données sécurisées pour les personnes ayant un compte le permettant.
+Fonctionalités:
+
+- pré-configuration des fonds de cartes officiels SITG en **tuiles vectorielles**
+- pré-configuration des géoservices **vector.sitg.ge.ch**, **raster.sitg.ge.ch** et **thematic.sitg.ge.ch**
+- support de l'**accès authentifié** via compte GINA/e-Demarches aux géoservices
+- raccourci vers le **catalogue de données** du SITG
 
 > [!IMPORTANT]
 > L'utilisation des données du SITG est soumise à [conditions](https://sitg.ge.ch/ressources/conditions-utilisation-donnees). Le niveau d'accès de chaque données est décrit dans le [catalogue web](https://sitg.ge.ch).
@@ -12,18 +17,15 @@ Pour le moment, le plugin permet la configuration pour les services **vector.sit
 > [!CAUTION]
 > Les services du SITG sont basés sur des solutions propriétaires qui ne sont encore que partiellement compatible avec QGIS et l'écosystème géomatique libre.
 >
-> De nombreux problèmes de performance ou de fiabilité sont connus et l'utilisation de QGIS comme client pour consommer les geoservices du SITG doit être considérée comme expérimentale.
+> Divers problèmes de performance ou de fiabilité sont connus et l'utilisation de QGIS comme client pour consommer les geoservices du SITG doit être considérée comme expérimentale. L´État de Genève contribue activement à l'amélioration de la comptatibilité de QGIS et tient ses utilisateurs informés via sa [newsletter](https://sitg.ge.ch/contact#newsletter).
 >
 > Pour les travaux critiques, nous vous recommandons de vous orienter davantage vers les données en téléchargement disponibles depuis le [catalogue web](https://sitg.ge.ch).
 
 ## Installer
 
-En attendant sa mise à disposition via le dépôt d'extension officiel de QGIS, le plugin est installable via un dépôt temporaire dédié.
+Le plugin est disponible directement depuis le gestionnaire d'extensions de QGIS sous le nom `SITG`. Pour le moment, il est nécessaire de cocher la case `activer les extensions expérimentales` dans l'onglet paramètres du gestionnaire d'extensions pour qu'il apparaisse dans la liste.
 
-1. Dans le gestionnaire d'extensions, onglet paramètre, ajouter le dépot `https://github.com/republique-et-canton-de-geneve/sitg-qgis-plugin/releases/latest/download/plugins.xml`
-2. Rechercher le plugin `qsitg` et l'installer
-
-Si l'installation a fonctionné, un nouveau sous-menu devraît être apparu dans le menu `Extensions`.
+Si l'installation a fonctionné, un nouveau sous-menu `SITG` devraît être apparu dans le menu `Extensions`.
 
 ## Contact / aide
 
