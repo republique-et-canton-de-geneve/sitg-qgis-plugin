@@ -235,18 +235,21 @@ class Qsitg:
 
         # Select freshly created items and show the browser
         model = treeview.model()
-        for browser_item_name in browser_items_names:
-            tree_items = model.match(
-                model.index(0, 0),
-                Qt.DisplayRole,
-                browser_item_name,
-                flags=Qt.MatchRecursive | Qt.MatchExactly | Qt.MatchCaseSensitive,
-            )
-            for tree_item in tree_items:
-                treeview.scrollTo(tree_item)
-                treeview.selectionModel().select(tree_item, QItemSelectionModel.Select)
-        browser.setVisible(True)
-        browser.raise_()
+        if model:  # unsure why this can be None but let's not crash (see issue #2)
+            for browser_item_name in browser_items_names:
+                tree_items = model.match(
+                    model.index(0, 0),
+                    Qt.DisplayRole,
+                    browser_item_name,
+                    flags=Qt.MatchRecursive | Qt.MatchExactly | Qt.MatchCaseSensitive,
+                )
+                for tree_item in tree_items:
+                    treeview.scrollTo(tree_item)
+                    treeview.selectionModel().select(
+                        tree_item, QItemSelectionModel.Select
+                    )
+            browser.setVisible(True)
+            browser.raise_()
 
         self.message(
             "Succès !",
