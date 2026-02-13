@@ -17,7 +17,7 @@ Fonctionalités:
 > [!CAUTION]
 > Les services du SITG sont basés sur des solutions propriétaires qui ne sont encore que partiellement compatibles avec QGIS et l'écosystème géomatique libre.
 >
-> Divers problèmes de performance ou de fiabilité sont connus et l'utilisation de QGIS comme client pour consommer les geoservices du SITG doit être considérée comme expérimentale. L´État de Genève contribue activement à l'amélioration de la comptatibilité de QGIS et tient ses utilisateurs informés via sa [newsletter](https://sitg.ge.ch/contact#newsletter).
+> Divers problèmes de performance ou de fiabilité sont connus et l'utilisation de QGIS comme client pour consommer les geoservices du SITG doit être considérée comme expérimentale. L´État de Genève contribue activement à l'amélioration de la compatibilité de QGIS et tient ses utilisateurs informés via sa [newsletter](https://sitg.ge.ch/contact#newsletter).
 >
 > Pour les travaux critiques, nous vous recommandons de vous orienter davantage vers les données en téléchargement disponibles depuis le [catalogue web](https://sitg.ge.ch).
 
