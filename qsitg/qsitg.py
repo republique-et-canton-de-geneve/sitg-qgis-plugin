@@ -163,11 +163,15 @@ class Qsitg:
     def do_reset_geoservices(self, with_auth: bool):
         browser_items_names = []
 
-        # Collapse all items in the browser (OAuth2 login is triggered if items are open when refreshing the browser)
+        # Show browser
         browser = self.iface.mainWindow().findChild(QDockWidget, "Browser")
+        browser2 = self.iface.mainWindow().findChild(QDockWidget, "Browser2")
+        if not browser.isVisible() and browser2.isVisible():
+            browser = browser2
+        browser.show()
+        browser.raise_()
         treeview = browser.findChild(QTreeView)
-        treeview.clearSelection()
-        treeview.collapseAll()
+        model = treeview.model()
 
         # Create or update the OAuth2 configuration
         auth_manager = QgsApplication.authManager()
@@ -234,22 +238,16 @@ class Qsitg:
         self.iface.reloadConnections()
 
         # Select freshly created items and show the browser
-        model = treeview.model()
-        if model:  # unsure why this can be None but let's not crash (see issue #2)
-            for browser_item_name in browser_items_names:
-                tree_items = model.match(
-                    model.index(0, 0),
-                    Qt.DisplayRole,
-                    browser_item_name,
-                    flags=Qt.MatchRecursive | Qt.MatchExactly | Qt.MatchCaseSensitive,
-                )
-                for tree_item in tree_items:
-                    treeview.scrollTo(tree_item)
-                    treeview.selectionModel().select(
-                        tree_item, QItemSelectionModel.Select
-                    )
-            browser.setVisible(True)
-            browser.raise_()
+        for browser_item_name in browser_items_names:
+            tree_items = model.match(
+                model.index(0, 0),
+                Qt.DisplayRole,
+                browser_item_name,
+                flags=Qt.MatchRecursive | Qt.MatchExactly | Qt.MatchCaseSensitive,
+            )
+            for tree_item in tree_items:
+                treeview.scrollTo(tree_item)
+                treeview.selectionModel().select(tree_item, QItemSelectionModel.Select)
 
         self.message(
             "Succès !",
