@@ -7,6 +7,8 @@ experimental=False
 # mandatory metadata
 name=SITG
 qgisMinimumVersion=3.0
+qgisMaximumVersion=4.99
+supportsQt6=True
 description=Plugin facilitant l'utilisation des services du Système d'Informations du Territoire du Canton de Genève (SITG) dans QGIS.
 author=République et canton de Genève
 email=olivier.dalang@etat.ge.ch

@@ -110,7 +110,7 @@ class Qsitg:
 
         self.iface.pluginMenu().removeAction(self.menu.menuAction())
 
-    def log(self, message, level=Qgis.Info):
+    def log(self, message, level=Qgis.MessageLevel.Info):
         QgsMessageLog.logMessage(message, "qsitg", level)
 
     def is_starting_up(self):
@@ -120,7 +120,7 @@ class Qsitg:
                 return True
         return False
 
-    def message(self, title, message, level=Qgis.Info):
+    def message(self, title, message, level=Qgis.MessageLevel.Info):
         messagebar = self.iface.messageBar()
         if messagebar is None:
             raise RuntimeError("couldn't load messagebar")
@@ -137,7 +137,7 @@ class Qsitg:
             self.settings.contains(KEY_DONT_SHOW_AGAIN)
         )
         self.dialog.show()
-        self.dialog.exec_()
+        self.dialog.exec()
 
         # Store don't show again
         QgsMessageLog.logMessage(f"{self.dialog.dont_show_again.isChecked()=}")
@@ -151,14 +151,14 @@ class Qsitg:
 
     def run_prompt_reset_geoservices(self):
         msgBox = QMessageBox(
-            QMessageBox.Question,
+            QMessageBox.Icon.Question,
             "Configuration des géoservices du SITG",
             "<p>Disposez-vous d'un compte GINA/E-Demarches vous permettant d'accéder à des données du SITG en accès restreint ?</p><p>Vous pourrez toujours changer cette option plus tard en choisissant <i>Reconfigurer les services</i> dans le menu de l'extension.</p>",
-            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
         )
-        msgBox.setDefaultButton(QMessageBox.No)
-        resp = msgBox.exec_()
-        self.do_reset_geoservices(with_auth=resp == QMessageBox.Yes)
+        msgBox.setDefaultButton(QMessageBox.StandardButton.No)
+        resp = msgBox.exec()
+        self.do_reset_geoservices(with_auth=resp == QMessageBox.StandardButton.Yes)
 
     def do_reset_geoservices(self, with_auth: bool):
         browser_items_names = []
@@ -196,7 +196,8 @@ class Qsitg:
         )
         auth_manager.storeAuthenticationConfig(auth_config, overwrite=True)
         self.log(
-            f"Successfully (re)created auth config {AUTH_SETTING_ID}", Qgis.Success
+            f"Successfully (re)created auth config {AUTH_SETTING_ID}",
+            Qgis.MessageLevel.Success,
         )
 
         # Create or update the Arcgis REST entries in the browser
@@ -216,7 +217,7 @@ class Qsitg:
 
         self.log(
             f"Successfully (re)created {len(ARCGISFEATURESERVERS)} Arcgis REST entries",
-            Qgis.Success,
+            Qgis.MessageLevel.Success,
         )
 
         # Create or update the vector tiles backgrounds
@@ -231,7 +232,7 @@ class Qsitg:
             settings.endGroup()
         self.log(
             f"Successfully (re)created {len(VECTORTILES)} Vector tiles entries",
-            Qgis.Success,
+            Qgis.MessageLevel.Success,
         )
 
         # Reload the browser GUI
@@ -241,17 +242,21 @@ class Qsitg:
         for browser_item_name in browser_items_names:
             tree_items = model.match(
                 model.index(0, 0),
-                Qt.DisplayRole,
+                Qt.ItemDataRole.DisplayRole,
                 browser_item_name,
-                flags=Qt.MatchRecursive | Qt.MatchExactly | Qt.MatchCaseSensitive,
+                flags=Qt.MatchFlag.MatchRecursive
+                | Qt.MatchFlag.MatchExactly
+                | Qt.MatchFlag.MatchCaseSensitive,
             )
             for tree_item in tree_items:
                 treeview.scrollTo(tree_item)
-                treeview.selectionModel().select(tree_item, QItemSelectionModel.Select)
+                treeview.selectionModel().select(
+                    tree_item, QItemSelectionModel.SelectionFlag.Select
+                )
 
         self.message(
             "Succès !",
             "Les geoservices du SITG ont été (re)configurés avec succès et sont prêts à être utilisés.",
-            Qgis.Success,
+            Qgis.MessageLevel.Success,
         )
         self.settings.setValue(KEY_CONFIG_DONE, "ok")
