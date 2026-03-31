@@ -87,7 +87,7 @@ class Qsitg:
         self.menu.addAction(self.action_about)
 
         self.action_catalog = QAction(
-            web_icon, "Ouvrir le catalogue du SITG dans le navigateur"
+            web_icon, "Ouvrir le portail du SITG dans le navigateur"
         )
         self.action_catalog.triggered.connect(self.run_open_catalog)
         self.menu.addAction(self.action_catalog)

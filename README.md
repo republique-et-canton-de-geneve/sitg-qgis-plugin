@@ -12,14 +12,14 @@ Fonctionalités:
 - raccourci vers le **portail de données** du SITG et vers le **guide d'utilisation du SITG avec QGIS**
 
 > [!IMPORTANT]
-> L'utilisation des données du SITG est soumise à [conditions](https://sitg.ge.ch/ressources/conditions-utilisation-donnees). Le niveau d'accès de chaque données est décrit dans le [catalogue web](https://sitg.ge.ch).
+> L'utilisation des données du SITG est soumise à [conditions](https://sitg.ge.ch/ressources/conditions-utilisation-donnees). Le niveau d'accès de chaque données est décrit sur le [portail du SITG](https://sitg.ge.ch).
 
 > [!CAUTION]
 > Les services du SITG sont basés sur des solutions propriétaires qui ne sont encore que partiellement compatibles avec QGIS et l'écosystème géomatique libre.
 >
 > Divers problèmes de performance ou de fiabilité sont connus et l'utilisation de QGIS comme client pour consommer les geoservices du SITG doit être considérée comme expérimentale. L´État de Genève contribue activement à l'amélioration de la compatibilité de QGIS et tient ses utilisateurs informés via sa [newsletter](https://sitg.ge.ch/contact#newsletter).
 >
-> Pour les travaux critiques, nous vous recommandons de vous orienter davantage vers les données en téléchargement disponibles depuis le [catalogue web](https://sitg.ge.ch).
+> Pour les travaux critiques, nous vous recommandons de vous orienter davantage vers les données en téléchargement disponibles depuis le [portail du SITG](https://sitg.ge.ch).
 
 ## Installation
 
