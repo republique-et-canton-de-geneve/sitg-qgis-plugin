@@ -38,9 +38,11 @@ from qgis.PyQt.QtCore import QItemSelectionModel, Qt
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import (
     QAction,
+    QApplication,
     QDockWidget,
     QMessageBox,
     QSplashScreen,
+    QStyle,
     QTreeView,
 )
 
@@ -68,6 +70,12 @@ class Qsitg:
         web_icon = QIcon(
             os.path.join(os.path.dirname(__file__), "resources", "catalog.png")
         )
+        icon_enum = (
+            QStyle.StandardPixmap if hasattr(QStyle, "StandardPixmap") else QStyle
+        )
+        help_icon = QApplication.style().standardIcon(
+            icon_enum.SP_TitleBarContextHelpButton
+        )
 
         plugin_menu = self.iface.pluginMenu()
         if plugin_menu is None:
@@ -83,6 +91,12 @@ class Qsitg:
         )
         self.action_catalog.triggered.connect(self.run_open_catalog)
         self.menu.addAction(self.action_catalog)
+
+        self.action_guide = QAction(
+            help_icon, "Ouvrir le guide d'utilisation dans le navigateur"
+        )
+        self.action_guide.triggered.connect(self.run_open_guide)
+        self.menu.addAction(self.action_guide)
 
         self.action_services = QAction("Reconfigurer les géoservices du SITG")
         self.action_services.triggered.connect(self.run_prompt_reset_geoservices)
@@ -148,6 +162,9 @@ class Qsitg:
 
     def run_open_catalog(self):
         webbrowser.open_new_tab("https://sitg.ge.ch")
+
+    def run_open_guide(self):
+        webbrowser.open_new_tab("https://sitg.ge.ch/ressources/le-sitg-avec-qgis")
 
     def run_prompt_reset_geoservices(self):
         msgBox = QMessageBox(

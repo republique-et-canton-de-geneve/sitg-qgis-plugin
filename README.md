@@ -9,7 +9,7 @@ Fonctionalités:
 - pré-configuration des fonds de cartes officiels SITG en **tuiles vectorielles**
 - pré-configuration des géoservices **vector.sitg.ge.ch**, **raster.sitg.ge.ch** et **thematic.sitg.ge.ch**
 - support de l'**accès authentifié** via compte GINA/e-Demarches aux géoservices
-- raccourci vers le **catalogue de données** du SITG
+- raccourci vers le **portail de données** du SITG et vers le **guide d'utilisation du SITG avec QGIS**
 
 > [!IMPORTANT]
 > L'utilisation des données du SITG est soumise à [conditions](https://sitg.ge.ch/ressources/conditions-utilisation-donnees). Le niveau d'accès de chaque données est décrit dans le [catalogue web](https://sitg.ge.ch).
