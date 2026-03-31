@@ -1,4 +1,4 @@
-# Plugin QGIS SITG ![status: beta](https://img.shields.io/badge/status-beta-orange)
+# Plugin QGIS SITG
 
 Ce plugin permet de faciliter l'utilisation des services du Système d'Informations du Territoire du Canton de Genève ([SITG](https://sitg.ge.ch/)) dans [QGIS](https://qgis.org/).
 

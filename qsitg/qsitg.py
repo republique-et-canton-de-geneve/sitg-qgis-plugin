@@ -72,7 +72,7 @@ class Qsitg:
         plugin_menu = self.iface.pluginMenu()
         if plugin_menu is None:
             raise RuntimeError("couldn't load plugin menu")
-        self.menu = plugin_menu.addMenu(icon, "SITG (beta)")
+        self.menu = plugin_menu.addMenu(icon, "SITG")
 
         self.action_about = QAction(icon, "À propos du SITG...")
         self.action_about.triggered.connect(self.run_about)
