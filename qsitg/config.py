@@ -1,7 +1,7 @@
 AUTH_SETTING_ID = "sitgOA2"
 ARCGISFEATURESERVERS = {
     "SITG - vector.sitg.ge.ch": {
-        "url": "https://vector.sitg.ge.ch/arcgis/rest/services/Hosted/",
+        "url": "https://vector.sitg.ge.ch/arcgis/rest/services/",
     },
     "SITG - raster.sitg.ge.ch": {
         "url": "https://raster.sitg.ge.ch/arcgis/rest/services/",
@@ -13,7 +13,7 @@ ARCGISFEATURESERVERS = {
     # un header Origin différent pour espérer que le cache ne soit pas partagé avec les services non authentifiés.
     # Pour le moment ce n'est pas suffisant et le cache est quand même partagé, voir bug https://github.com/qgis/QGIS/issues/63009
     "SITG - vector.sitg.ge.ch - [auth]": {
-        "url": "https://vector.sitg.ge.ch/arcgis/rest/services/Hosted/",
+        "url": "https://vector.sitg.ge.ch/arcgis/rest/services/",
         "authcfg": AUTH_SETTING_ID,
         "http-header": {"Origin": "qsitg-with-auth"},
     },
