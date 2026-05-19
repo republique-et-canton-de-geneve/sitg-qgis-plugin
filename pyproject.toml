@@ -1,4 +1,6 @@
 [project]
+name = "sitg-qgis-plugin"
+dynamic = ["version"]
 requires-python = ">=3.11"
 
 [tool.ruff]
