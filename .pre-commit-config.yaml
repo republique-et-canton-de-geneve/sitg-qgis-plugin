@@ -25,6 +25,7 @@ repos:
     rev: v1.18.2
     hooks:
       - id: mypy
+        pass_filenames: false
         args:
           - --install-types
           - --non-interactive
@@ -35,6 +36,7 @@ repos:
     rev: 1.8.6
     hooks:
       - id: bandit
+        pass_filenames: false
         args:
           - -r
           - qsitg
