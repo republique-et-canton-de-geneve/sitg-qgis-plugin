@@ -1,3 +1,4 @@
+import hashlib
 import json
 import os
 import webbrowser
@@ -50,9 +51,7 @@ class Qsitg:
         plugin_menu = self.iface.pluginMenu()
         if plugin_menu is None:
             raise RuntimeError("couldn't load plugin menu")
-        self.menu = plugin_menu.addMenu(
-            icon, f"{self.get_metadata_name} - v{self.get_metadata_version}"
-        )
+        self.menu = plugin_menu.addMenu(icon, f"{self.get_metadata_name} - v{self.get_metadata_version}")
 
         self.action_about = QAction(icon, "À propos du SITG...")
         self.action_about.triggered.connect(self.run_about)
@@ -153,7 +152,7 @@ class Qsitg:
 
         # If stored_hash exists and no change detected, do nothing
         if stored_hash is not None and stored_hash == current_hash:
-            return True
+            return None
 
         # Compute message in box
         msgBox = QMessageBox(
@@ -304,4 +303,4 @@ class Qsitg:
             "arcgis": ARCGISFEATURESERVERS,
             "vectortiles": VECTORTILES,
         }
-        return hashlib.md5(json.dumps(data, sort_keys=True).encode()).hexdigest()
+        return hashlib.md5(json.dumps(data, sort_keys=True).encode(), usedforsecurity=False).hexdigest()
