@@ -138,6 +138,7 @@ class Qsitg:
         webbrowser.open_new_tab("https://sitg.ge.ch/ressources/le-sitg-avec-qgis")
 
     def run_need_to_reset_geoservices(self) -> None:
+        """Check if hash has change, ask to run the reconfiguration."""
         # Get settings
         settings = QgsSettings()
 
@@ -288,14 +289,17 @@ class Qsitg:
 
     @property
     def get_metadata_version(self):
+        """Get version from metadata."""
         return pluginMetadata("qsitg", "version")
 
     @property
     def get_metadata_name(self):
+        """Get name from metadata."""
         return pluginMetadata("qsitg", "name")
 
     @property
     def current_config_hash(self):
+        """Generate config hash with actual config."""
         data = {
             "arcgis": ARCGISFEATURESERVERS,
             "vectortiles": VECTORTILES,
