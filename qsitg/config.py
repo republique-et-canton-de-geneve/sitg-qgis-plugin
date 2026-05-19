@@ -1,5 +1,8 @@
+from typing import Any, Dict
+
 AUTH_SETTING_ID = "sitgOA2"
-ARCGISFEATURESERVERS = {
+
+ARCGISFEATURESERVERS: Dict[str, Any] = {
     "SITG - vector.sitg.ge.ch": {
         "url": "https://vector.sitg.ge.ch/arcgis/rest/services/",
     },

@@ -1,3 +1,5 @@
+name: Code quality
+
 on:
   push:
     branches:
@@ -5,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  test:
+  precommit:
     runs-on: ubuntu-latest
 
     steps:
