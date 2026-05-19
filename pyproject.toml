@@ -1,0 +1,16 @@
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+extend-select = ["I", "F", "E", "W", "D"]
+ignore = ["E501", "D401", "D107", "D100", "D104"]
+
+[tool.black]
+line-length = 120
+target-version = ['py311']
+
+[tool.mypy]
+disallow_untyped_calls = false
+warn_unused_ignores = false
+ignore_missing_imports = true
+strict = false

@@ -1,2 +1,5 @@
 __pycache__
 .venv
+*.lock
+.mypy_cache
+.ruff_cache
