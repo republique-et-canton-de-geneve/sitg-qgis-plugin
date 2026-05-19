@@ -21,11 +21,10 @@ from qgis.PyQt.QtWidgets import (
     QStyle,
     QTreeView,
 )
+from qgis.utils import pluginMetadata
 
 from .config import ARCGISFEATURESERVERS, AUTH_SETTING_ID, VECTORTILES
 from .qsitg_dialog import QsitgDialog
-from qgis.utils import pluginMetadata
-import hashlib
 
 KEY_CONFIG_DONE = "configuration_done_flag"
 KEY_DONT_SHOW_AGAIN = "dont_show_again"
@@ -87,9 +86,7 @@ class Qsitg:
                 self.run_prompt_reset_geoservices()
 
         # Check geoservices at the end of plugin intialization
-        self.iface.initializationCompleted.connect(
-            self.run_need_to_reset_geoservices
-        )
+        self.iface.initializationCompleted.connect(self.run_need_to_reset_geoservices)
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
@@ -141,7 +138,6 @@ class Qsitg:
         webbrowser.open_new_tab("https://sitg.ge.ch/ressources/le-sitg-avec-qgis")
 
     def run_need_to_reset_geoservices(self) -> None:
-
         # Get settings
         settings = QgsSettings()
 
@@ -157,7 +153,7 @@ class Qsitg:
         # If stored_hash exists and no change detected, do nothing
         if stored_hash is not None and stored_hash == current_hash:
             return True
-        
+
         # Compute message in box
         msgBox = QMessageBox(
             QMessageBox.Icon.Question,
@@ -170,13 +166,12 @@ class Qsitg:
 
         # If yes reset geoservices
         if resp == QMessageBox.StandardButton.Yes:
-
             # Log
             self.log("Reset Geoservices : YES.")
 
             # Store new hash
             settings.setValue("qsitg/config_hash", current_hash)
-        
+
             # Run prompt reset command
             self.run_prompt_reset_geoservices()
 
@@ -295,10 +290,10 @@ class Qsitg:
     def get_metadata_version(self):
         return pluginMetadata("qsitg", "version")
 
-    @property    
+    @property
     def get_metadata_name(self):
         return pluginMetadata("qsitg", "name")
-    
+
     @property
     def current_config_hash(self):
         data = {
