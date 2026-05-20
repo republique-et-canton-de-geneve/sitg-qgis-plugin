@@ -12,7 +12,7 @@ from qgis.core import (
 )
 from qgis.gui import QgisInterface
 from qgis.PyQt.QtCore import QItemSelectionModel, Qt
-from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtGui import QIcon, QPixmap
 from qgis.PyQt.QtWidgets import (
     QAction,
     QApplication,
@@ -156,21 +156,40 @@ class Qsitg:
 
         # Compute message in box
         msgBox = QMessageBox(
-            QMessageBox.Icon.Question,
+            QMessageBox.Icon.NoIcon,
             "Nouvelle configuration des geoservices",
-            "<p> Une nouvelle configuration des geoservices est disponible, voulez vous recharger ? </p>",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            "<p><b>SITG Etat de Genève<b><p><p>Une nouvelle configuration est disponible, voulez-vous reconfigurer les géoservices du SITG ?</p>",
+            QMessageBox.StandardButton.Yes,
         )
-        msgBox.setDefaultButton(QMessageBox.StandardButton.No)
-        resp = msgBox.exec()
+
+        # Remplace l’icône standard par une image personnalisée
+        base_path = os.path.dirname(__file__)
+        image_path = os.path.join(base_path, "resources", "etat_geneve.png")
+        pixmap = QPixmap(image_path)
+        msgBox.setIconPixmap(pixmap.scaledToWidth(64))
+
+        # Create yes button
+        yes_button = msgBox.button(QMessageBox.StandardButton.Yes)
+
+        # Create ask later button
+        msgBox.addButton(
+            "Me le rappeler plus tard",
+            QMessageBox.ButtonRole.ActionRole,
+        )
+
+        msgBox.setDefaultButton(yes_button)
+        msgBox.exec()
+
+        # Get content
+        if msgBox.clickedButton() == yes_button:
+            resp = QMessageBox.StandardButton.Yes
+        else:
+            resp = "later"
 
         # If yes reset geoservices
         if resp == QMessageBox.StandardButton.Yes:
             # Log
             self.log("Reset Geoservices : YES.")
-
-            # Store new hash
-            settings.setValue("qsitg/config_hash", current_hash)
 
             # Run prompt reset command
             self.run_prompt_reset_geoservices()
