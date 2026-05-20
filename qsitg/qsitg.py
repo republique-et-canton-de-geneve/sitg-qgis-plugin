@@ -1,3 +1,4 @@
+import hashlib
 import json
 import os
 import webbrowser
@@ -11,7 +12,7 @@ from qgis.core import (
 )
 from qgis.gui import QgisInterface
 from qgis.PyQt.QtCore import QItemSelectionModel, Qt
-from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtGui import QIcon, QPixmap
 from qgis.PyQt.QtWidgets import (
     QAction,
     QApplication,
@@ -21,6 +22,7 @@ from qgis.PyQt.QtWidgets import (
     QStyle,
     QTreeView,
 )
+from qgis.utils import pluginMetadata
 
 from .config import ARCGISFEATURESERVERS, AUTH_SETTING_ID, VECTORTILES
 from .qsitg_dialog import QsitgDialog
@@ -49,7 +51,7 @@ class Qsitg:
         plugin_menu = self.iface.pluginMenu()
         if plugin_menu is None:
             raise RuntimeError("couldn't load plugin menu")
-        self.menu = plugin_menu.addMenu(icon, "SITG")
+        self.menu = plugin_menu.addMenu(icon, f"{self.get_metadata_name} - v{self.get_metadata_version}")
 
         self.action_about = QAction(icon, "À propos du SITG...")
         self.action_about.triggered.connect(self.run_about)
@@ -81,6 +83,9 @@ class Qsitg:
                 self.run_about()
             if not self.settings.contains(KEY_CONFIG_DONE):
                 self.run_prompt_reset_geoservices()
+
+        # Check geoservices at the end of plugin intialization
+        self.iface.initializationCompleted.connect(self.run_need_to_reset_geoservices)
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
@@ -130,6 +135,64 @@ class Qsitg:
     def run_open_guide(self):
         """Open the SITG QGIS user guide in the default web browser."""
         webbrowser.open_new_tab("https://sitg.ge.ch/ressources/le-sitg-avec-qgis")
+
+    def run_need_to_reset_geoservices(self) -> None:
+        """Check if hash has change, ask to run the reconfiguration."""
+        # Get settings
+        settings = QgsSettings()
+
+        # Recompute current hash
+        current_hash = self.current_config_hash
+
+        # Get actual stored hash
+        stored_hash = settings.value("qsitg/config_hash", None)
+
+        # Log
+        self.log("Need to reset geoservices ?")
+
+        # If stored_hash exists and no change detected, do nothing
+        if stored_hash is not None and stored_hash == current_hash:
+            return None
+
+        # Compute message in box
+        msgBox = QMessageBox(
+            QMessageBox.Icon.NoIcon,
+            "Nouvelle configuration des geoservices",
+            "<p><b>SITG Etat de Genève<b><p><p>Une nouvelle configuration est disponible, voulez-vous reconfigurer les géoservices du SITG ?</p>",
+            QMessageBox.StandardButton.Yes,
+        )
+
+        # Remplace l’icône standard par une image personnalisée
+        base_path = os.path.dirname(__file__)
+        image_path = os.path.join(base_path, "resources", "etat_geneve.png")
+        pixmap = QPixmap(image_path)
+        msgBox.setIconPixmap(pixmap.scaledToWidth(64))
+
+        # Create yes button
+        yes_button = msgBox.button(QMessageBox.StandardButton.Yes)
+
+        # Create ask later button
+        msgBox.addButton(
+            "Me le rappeler plus tard",
+            QMessageBox.ButtonRole.ActionRole,
+        )
+
+        msgBox.setDefaultButton(yes_button)
+        msgBox.exec()
+
+        # Get content
+        if msgBox.clickedButton() == yes_button:
+            resp = QMessageBox.StandardButton.Yes
+        else:
+            resp = "later"
+
+        # If yes reset geoservices
+        if resp == QMessageBox.StandardButton.Yes:
+            # Log
+            self.log("Reset Geoservices : YES.")
+
+            # Run prompt reset command
+            self.run_prompt_reset_geoservices()
 
     def run_prompt_reset_geoservices(self):
         """Prompt the user to configure SITG geoservices authentication."""
@@ -239,4 +302,24 @@ class Qsitg:
             "Les geoservices du SITG ont été (re)configurés avec succès et sont prêts à être utilisés.",
             Qgis.MessageLevel.Success,
         )
+        self.settings.setValue("qsitg/config_hash", self.current_config_hash)
         self.settings.setValue(KEY_CONFIG_DONE, "ok")
+
+    @property
+    def get_metadata_version(self):
+        """Get version from metadata."""
+        return pluginMetadata("qsitg", "version")
+
+    @property
+    def get_metadata_name(self):
+        """Get name from metadata."""
+        return pluginMetadata("qsitg", "name")
+
+    @property
+    def current_config_hash(self):
+        """Generate config hash with actual config."""
+        data = {
+            "arcgis": ARCGISFEATURESERVERS,
+            "vectortiles": VECTORTILES,
+        }
+        return hashlib.md5(json.dumps(data, sort_keys=True).encode(), usedforsecurity=False).hexdigest()
