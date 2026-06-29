@@ -27,7 +27,7 @@ from qgis.utils import pluginMetadata
 from .config import ARCGISFEATURESERVERS, AUTH_SETTING_ID, VECTORTILES
 from .qsitg_dialog import QsitgDialog
 
-KEY_CONFIG_DONE = "configuration_done_flag"
+KEY_CONFIG_HASH = "config_hash"
 KEY_DONT_SHOW_AGAIN = "dont_show_again"
 
 
@@ -74,14 +74,14 @@ class Qsitg:
             self.log("is starting up: gui deferred")
             if not self.settings.contains(KEY_DONT_SHOW_AGAIN):
                 self.iface.initializationCompleted.connect(self.run_about)
-            if not self.settings.contains(KEY_CONFIG_DONE):
+            if not self.settings.contains(KEY_CONFIG_HASH):
                 self.iface.initializationCompleted.connect(self.run_prompt_reset_geoservices)
         else:
             # otherwise (right after manual install), we show the gui right away
             self.log("initialization already done: we show right away")
             if not self.settings.contains(KEY_DONT_SHOW_AGAIN):
                 self.run_about()
-            if not self.settings.contains(KEY_CONFIG_DONE):
+            if not self.settings.contains(KEY_CONFIG_HASH):
                 self.run_prompt_reset_geoservices()
 
         # Check geoservices at the end of plugin intialization
@@ -138,18 +138,17 @@ class Qsitg:
 
     def run_need_to_reset_geoservices(self) -> None:
         """Check if hash has change, ask to run the reconfiguration."""
-
         # Recompute current hash
         current_hash = self.current_config_hash
+        self.log(f"current hash is: {current_hash}")
 
         # Get actual stored hash
         stored_hash = self.settings.value("qsitg/config_hash", None)
-
-        # Log
-        self.log("Need to reset geoservices ?")
+        self.log(f"stored hash is: {stored_hash}")
 
         # If stored_hash exists and no change detected, do nothing
         if stored_hash is not None and stored_hash == current_hash:
+            self.log("no need to reset geoservices")
             return None
 
         # Compute message in box
@@ -175,22 +174,16 @@ class Qsitg:
             QMessageBox.ButtonRole.ActionRole,
         )
 
+        self.log("prompting user to reset geoservices")
         msgBox.setDefaultButton(yes_button)
         msgBox.exec()
 
         # Get content
         if msgBox.clickedButton() == yes_button:
-            resp = QMessageBox.StandardButton.Yes
-        else:
-            resp = "later"
-
-        # If yes reset geoservices
-        if resp == QMessageBox.StandardButton.Yes:
-            # Log
-            self.log("Reset Geoservices : YES.")
-
-            # Run prompt reset command
+            self.log("reset geoservices: YES")
             self.run_prompt_reset_geoservices()
+        else:
+            self.log("reset geoservices: LATER")
 
     def run_prompt_reset_geoservices(self):
         """Prompt the user to configure SITG geoservices authentication."""
@@ -300,8 +293,8 @@ class Qsitg:
             "Les geoservices du SITG ont été (re)configurés avec succès et sont prêts à être utilisés.",
             Qgis.MessageLevel.Success,
         )
-        self.settings.setValue("qsitg/config_hash", self.current_config_hash)
-        self.settings.setValue(KEY_CONFIG_DONE, "ok")
+        self.log(f"storing hash: {self.current_config_hash}")
+        self.settings.setValue(KEY_CONFIG_HASH, self.current_config_hash)
 
     @property
     def get_metadata_version(self):
