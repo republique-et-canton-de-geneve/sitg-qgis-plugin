@@ -138,14 +138,12 @@ class Qsitg:
 
     def run_need_to_reset_geoservices(self) -> None:
         """Check if hash has change, ask to run the reconfiguration."""
-        # Get settings
-        settings = QgsSettings()
 
         # Recompute current hash
         current_hash = self.current_config_hash
 
         # Get actual stored hash
-        stored_hash = settings.value("qsitg/config_hash", None)
+        stored_hash = self.settings.value("qsitg/config_hash", None)
 
         # Log
         self.log("Need to reset geoservices ?")
