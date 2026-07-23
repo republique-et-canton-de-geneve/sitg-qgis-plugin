@@ -143,7 +143,7 @@ class Qsitg:
         self.log(f"current hash is: {current_hash}")
 
         # Get actual stored hash
-        stored_hash = self.settings.value("qsitg/config_hash", None)
+        stored_hash = self.settings.value(KEY_CONFIG_HASH, None)
         self.log(f"stored hash is: {stored_hash}")
 
         # If stored_hash exists and no change detected, do nothing
