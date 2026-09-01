@@ -1,0 +1,30 @@
+services:
+  tests:
+    image: ${QSITG_TEST_IMAGE:-qgis/qgis:3.44}
+    volumes:
+      # mount the plugin into both profile trees
+      - ./qsitg:/root/.local/share/QGIS/QGIS3/profiles/default/python/plugins/qsitg
+      - ./qsitg:/root/.local/share/QGIS/QGIS4/profiles/default/python/plugins/qsitg
+      # default config (enabling the plugin), under the name each generation expects
+      - ./testing/qgis-profile.ini:/root/.local/share/QGIS/QGIS3/profiles/default/QGIS/QGIS3.ini
+      - ./testing/qgis-profile.ini:/root/.local/share/QGIS/QGIS4/profiles/default/QGIS/QGIS4.ini
+      # mount the testing setup
+      - ./testing:/testing
+    environment:
+      QT_QPA_PLATFORM: offscreen
+    init: true # not sure why, but this is necessary for xvfb (see https://stackoverflow.com/a/72017110)
+    entrypoint: xvfb-run -a
+    command: qgis --code /testing/runner.py
+
+
+  # Runs tests (with visual feedback)
+  tests-gui:
+    extends: tests
+    volumes:
+      # mount the x11 socket to forward display to host
+      - ${X11_SOCKET:-/tmp/.X11-unix}:/tmp/.X11-unix
+    environment:
+      QT_QPA_PLATFORM: xcb
+      DISPLAY: :0
+    init: false
+    entrypoint: ""
