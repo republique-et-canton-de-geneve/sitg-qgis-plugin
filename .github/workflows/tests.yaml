@@ -1,0 +1,25 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        qgis_image:
+          - qgis/qgis:4.2
+          - qgis/qgis:3.44
+
+    env:
+      QSITG_TEST_IMAGE: ${{ matrix.qgis_image }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run tests (${{ matrix.qgis_image }})
+        run: docker compose run tests

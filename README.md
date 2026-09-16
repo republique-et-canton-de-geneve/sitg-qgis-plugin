@@ -66,6 +66,16 @@ Pour recharger le code dynamiquement grâce au plugin `Plugin reloader`, il faut
 mklink /D %appdata%\QGIS\QGIS3\profiles\default\python\plugins\qsitg C:\chemin\vers\dossiergit\qsitg
 ```
 
+Les tests automatiques peuvent être lancés avec `docker` comme suit. Avant d'executer la commande, copier `.env.example` vers `.env` et adaptez la configuration.
+
+```sh
+# executer les tests en mode headless
+docker compose run --rm tests
+
+# executer les tests en affichant l'interface
+docker compose run --rm tests-gui
+```
+
 </details>
 
 ### Packager
