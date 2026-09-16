@@ -5,9 +5,6 @@ services:
       # mount the plugin into both profile trees
       - ./qsitg:/root/.local/share/QGIS/QGIS3/profiles/default/python/plugins/qsitg
       - ./qsitg:/root/.local/share/QGIS/QGIS4/profiles/default/python/plugins/qsitg
-      # default config (enabling the plugin), under the name each generation expects
-      - ./testing/qgis-profile.ini:/root/.local/share/QGIS/QGIS3/profiles/default/QGIS/QGIS3.ini
-      - ./testing/qgis-profile.ini:/root/.local/share/QGIS/QGIS4/profiles/default/QGIS/QGIS4.ini
       # mount the testing setup
       - ./testing:/testing
     environment:

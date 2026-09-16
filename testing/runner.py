@@ -7,14 +7,19 @@ import os
 import sys
 
 import pytest
-from pyplugin_installer.installer import loadPlugin
+from qgis.core import QgsApplication
+from qgis.utils import loadPlugin, startPlugin
 
 print("Starting tests...")
 sys.stdout.flush()
 
+# Prevent master password prompt for popping up
+QgsApplication.authManager().setMasterPassword("1234", verify=False)
+
 # Enable the plugin
 print("Enabling the plugin...")
 loadPlugin("qsitg")
+startPlugin("qsitg")
 
 # Run the tests
 exit_code = pytest.main(["/testing/", "-vv"])
