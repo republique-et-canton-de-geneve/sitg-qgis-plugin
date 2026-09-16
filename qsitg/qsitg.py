@@ -3,13 +3,7 @@ import json
 import os
 import webbrowser
 
-from qgis.core import (
-    Qgis,
-    QgsApplication,
-    QgsAuthMethodConfig,
-    QgsMessageLog,
-    QgsSettings,
-)
+from qgis.core import Qgis, QgsApplication, QgsAuthMethodConfig, QgsMessageLog, QgsSettings
 from qgis.gui import QgisInterface
 from qgis.PyQt.QtCore import QItemSelectionModel, Qt
 from qgis.PyQt.QtGui import QIcon, QPixmap
@@ -25,7 +19,9 @@ from qgis.PyQt.QtWidgets import (
 from qgis.utils import pluginMetadata
 
 from .config import ARCGISFEATURESERVERS, AUTH_SETTING_ID, VECTORTILES
+from .locator import QsitgGeocoderLocatorFilter
 from .qsitg_dialog import QsitgDialog
+from .utils import log
 
 KEY_CONFIG_HASH = "config_hash"
 KEY_DONT_SHOW_AGAIN = "dont_show_again"
@@ -40,6 +36,9 @@ class Qsitg:
         self.dialog = None
         self.settings = QgsSettings()
         self.settings.beginGroup("qsitg")
+
+        self.locator = QsitgGeocoderLocatorFilter()
+        self.iface.registerLocatorFilter(self.locator)
 
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
@@ -71,14 +70,14 @@ class Qsitg:
 
         if self.is_starting_up():
             # if initializing, we do not show the gui right away, but wait until init is complete
-            self.log("is starting up: gui deferred")
+            log("is starting up: gui deferred")
             if not self.settings.contains(KEY_DONT_SHOW_AGAIN):
                 self.iface.initializationCompleted.connect(self.run_about)
             if not self.settings.contains(KEY_CONFIG_HASH):
                 self.iface.initializationCompleted.connect(self.run_prompt_reset_geoservices)
         else:
             # otherwise (right after manual install), we show the gui right away
-            self.log("initialization already done: we show right away")
+            log("initialization already done: we show right away")
             if not self.settings.contains(KEY_DONT_SHOW_AGAIN):
                 self.run_about()
             if not self.settings.contains(KEY_CONFIG_HASH):
@@ -90,10 +89,7 @@ class Qsitg:
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
         self.iface.pluginMenu().removeAction(self.menu.menuAction())
-
-    def log(self, message, level=Qgis.MessageLevel.Info):
-        """Push log message with level."""
-        QgsMessageLog.logMessage(message, "qsitg", level)
+        self.iface.deregisterLocatorFilter(self.locator)
 
     def is_starting_up(self):
         """Hacky way to retrieve if QGIS is still starting up."""
@@ -140,15 +136,15 @@ class Qsitg:
         """Check if hash has change, ask to run the reconfiguration."""
         # Recompute current hash
         current_hash = self.current_config_hash
-        self.log(f"current hash is: {current_hash}")
+        log(f"current hash is: {current_hash}")
 
         # Get actual stored hash
         stored_hash = self.settings.value(KEY_CONFIG_HASH, None)
-        self.log(f"stored hash is: {stored_hash}")
+        log(f"stored hash is: {stored_hash}")
 
         # If stored_hash exists and no change detected, do nothing
         if stored_hash is not None and stored_hash == current_hash:
-            self.log("no need to reset geoservices")
+            log("no need to reset geoservices")
             return None
 
         # Compute message in box
@@ -174,16 +170,16 @@ class Qsitg:
             QMessageBox.ButtonRole.ActionRole,
         )
 
-        self.log("prompting user to reset geoservices")
+        log("prompting user to reset geoservices")
         msgBox.setDefaultButton(yes_button)
         msgBox.exec()
 
         # Get content
         if msgBox.clickedButton() == yes_button:
-            self.log("reset geoservices: YES")
+            log("reset geoservices: YES")
             self.run_prompt_reset_geoservices()
         else:
-            self.log("reset geoservices: LATER")
+            log("reset geoservices: LATER")
 
     def run_prompt_reset_geoservices(self):
         """Prompt the user to configure SITG geoservices authentication."""
@@ -233,7 +229,7 @@ class Qsitg:
             ),
         )
         auth_manager.storeAuthenticationConfig(auth_config, overwrite=True)
-        self.log(
+        log(
             f"Successfully (re)created auth config {AUTH_SETTING_ID}",
             Qgis.MessageLevel.Success,
         )
@@ -253,7 +249,7 @@ class Qsitg:
                 # remove it
                 settings.remove(name)
 
-        self.log(
+        log(
             f"Successfully (re)created {len(ARCGISFEATURESERVERS)} Arcgis REST entries",
             Qgis.MessageLevel.Success,
         )
@@ -268,7 +264,7 @@ class Qsitg:
             for key, val in config.items():
                 settings.setValue(key, val)
             settings.endGroup()
-        self.log(
+        log(
             f"Successfully (re)created {len(VECTORTILES)} Vector tiles entries",
             Qgis.MessageLevel.Success,
         )
@@ -293,7 +289,7 @@ class Qsitg:
             "Les geoservices du SITG ont été (re)configurés avec succès et sont prêts à être utilisés.",
             Qgis.MessageLevel.Success,
         )
-        self.log(f"storing hash: {self.current_config_hash}")
+        log(f"storing hash: {self.current_config_hash}")
         self.settings.setValue(KEY_CONFIG_HASH, self.current_config_hash)
 
     @property
