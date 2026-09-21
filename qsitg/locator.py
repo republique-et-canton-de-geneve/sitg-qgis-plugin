@@ -46,8 +46,12 @@ class QsitgGeocoderInterface(QgsGeocoderInterface):
         results = []
         for i, hit in enumerate(data["hits"]):
             # The locator sorts results alphabetically (see https://github.com/qgis/QGIS/issues/67497).
-            # Until this is fixed, we prepend a zero-width character to keep ordering.
-            _order = "\u200b" * (len(data) - i)
+            if Qgis.versionInt() >= 40000:
+                # until fixed, we prepend a zero-width character to keep ordering
+                _order = "\u200b" * (len(data["hits"]) - i)
+            else:
+                # under QGIS 3.x \u200b doesn't affect the order, let's show a number...
+                _order = f"{i + 1:2d}. "
             result = QgsGeocoderResult(
                 identifier=f"{_order}{hit['streetName']}, {hit['houseNumber']}",
                 geometry=QgsGeometry.fromPoint(QgsPoint(hit["longitude"], hit["latitude"])),
