@@ -25,6 +25,7 @@ class QsitgGeocoderInterface(QgsGeocoderInterface):
 
         query = QUrlQuery()
         query.addQueryItem("q", string)
+        query.addQueryItem("suggest", "true")
         url = QUrl("https://geocodage.sitg-lab.ch/api/v2/search")
         url.setQuery(query)
         request = QNetworkRequest(url)
@@ -39,14 +40,18 @@ class QsitgGeocoderInterface(QgsGeocoderInterface):
         data = json.loads(bytes(reply.content()))
 
         results = []
-        for hit in data["hits"]:
+        for i, hit in enumerate(data["hits"]):
+            # The locator sorts results alphabetically (see https://github.com/qgis/QGIS/issues/67497).
+            # Until this is fixed, we prepend a zero-width character to keep ordering.
+            _order = "\u200b" * (len(data) - i)
             result = QgsGeocoderResult(
-                identifier=f"{hit['streetName']}, {hit['houseNumber']}",
+                identifier=f"{_order}{hit['streetName']}, {hit['houseNumber']}",
                 geometry=QgsGeometry.fromPoint(QgsPoint(hit["longitude"], hit["latitude"])),
                 crs=QgsCoordinateReferenceSystem("EPSG:4326"),
             )
             result.setDescription(f"{hit['postalCode']} {hit['locality']} [{hit['administrativeDivision']}]")
-            # result.setIcon(...) # not exposed by API and workaround is too cumbersome
+            # Icons aren't supported yet (see https://github.com/qgis/QGIS/issues/67498)
+            # result.setIcon(...)
             results.append(result)
 
         return results
