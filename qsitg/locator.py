@@ -21,8 +21,6 @@ from qgis.PyQt.QtCore import QUrl, QUrlQuery
 from qgis.PyQt.QtNetwork import QNetworkRequest
 from qgis.utils import iface
 
-from .utils import log
-
 EGID_EGRID_PATTERN = r"^(?:CH)?\d+$"
 EPSG_4326 = QgsCoordinateReferenceSystem("EPSG:4326")
 
@@ -43,7 +41,7 @@ class QsitgGeocoderInterface(QgsGeocoderInterface):
 
         error = network.get(request)
         if error != QgsBlockingNetworkRequest.NoError:
-            log(f"{network.errorMessage()}", Qgis.MessageLevel.Error)
+            # error is already logged by QgsBlockingNetworkRequest
             return []
 
         reply = network.reply()
