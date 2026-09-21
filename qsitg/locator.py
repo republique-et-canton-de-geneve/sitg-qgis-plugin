@@ -5,10 +5,15 @@ from qgis.core import (
     Qgis,
     QgsBlockingNetworkRequest,
     QgsCoordinateReferenceSystem,
+    QgsCoordinateTransform,
+    QgsDistanceArea,
+    QgsGeocoderContext,
     QgsGeocoderInterface,
     QgsGeocoderResult,
     QgsGeometry,
     QgsPoint,
+    QgsPointXY,
+    QgsProject,
     QgsRectangle,
 )
 from qgis.gui import QgsGeocoderLocatorFilter
@@ -19,10 +24,11 @@ from qgis.utils import iface
 from .utils import log
 
 EGID_EGRID_PATTERN = r"^(?:CH)?\d+$"
+EPSG_4326 = QgsCoordinateReferenceSystem("EPSG:4326")
 
 
 class QsitgGeocoderInterface(QgsGeocoderInterface):
-    def geocodeString(self, string: str | None, _context, _feedback=None) -> list[QgsGeocoderResult]:
+    def geocodeString(self, string: str | None, context: QgsGeocoderContext, _feedback=None) -> list[QgsGeocoderResult]:
         if not string or len(string) < 3:
             return []
 
@@ -43,8 +49,19 @@ class QsitgGeocoderInterface(QgsGeocoderInterface):
         reply = network.reply()
         data = json.loads(bytes(reply.content()))
 
+        # Until sorting by focus point is implemented by the API we do it here
+        # (see https://gitlab.com/sitg-lab/geocoding/sitg-geocoder/-/work_items/32)
+        tfx = QgsCoordinateTransform(context.areaOfInterestCrs(), EPSG_4326, QgsProject.instance())
+        focus = tfx.transform(context.areaOfInterest().centroid().asPoint())
+        d = QgsDistanceArea()
+        d.setEllipsoid("WGS84")
+        sorted_hits = sorted(
+            data["hits"],
+            key=lambda hit: (-hit["score"], d.measureLine(focus, QgsPointXY(hit["longitude"], hit["latitude"]))),
+        )
+
         results = []
-        for i, hit in enumerate(data["hits"]):
+        for i, hit in enumerate(sorted_hits):
             # The locator sorts results alphabetically (see https://github.com/qgis/QGIS/issues/67497).
             if Qgis.versionInt() >= 40000:
                 # until fixed, we prepend a zero-width character to keep ordering
@@ -55,7 +72,7 @@ class QsitgGeocoderInterface(QgsGeocoderInterface):
             result = QgsGeocoderResult(
                 identifier=f"{_order}{hit['streetName']}, {hit['houseNumber']}",
                 geometry=QgsGeometry.fromPoint(QgsPoint(hit["longitude"], hit["latitude"])),
-                crs=QgsCoordinateReferenceSystem("EPSG:4326"),
+                crs=EPSG_4326,
             )
             result.setDescription(f"{hit['postalCode']} {hit['locality']} [{hit['administrativeDivision']}]")
             # Icons aren't supported yet (see https://github.com/qgis/QGIS/issues/67498)
