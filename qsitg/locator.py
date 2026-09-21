@@ -1,4 +1,5 @@
 import json
+import re
 
 from qgis.core import (
     Qgis,
@@ -17,6 +18,8 @@ from qgis.utils import iface
 
 from .utils import log
 
+EGID_EGRID_PATTERN = r"^(?:CH)?\d+$"
+
 
 class QsitgGeocoderInterface(QgsGeocoderInterface):
     def geocodeString(self, string: str | None, _context, _feedback=None) -> list[QgsGeocoderResult]:
@@ -25,7 +28,8 @@ class QsitgGeocoderInterface(QgsGeocoderInterface):
 
         query = QUrlQuery()
         query.addQueryItem("q", string)
-        query.addQueryItem("suggest", "true")
+        if not re.match(EGID_EGRID_PATTERN, string):
+            query.addQueryItem("suggest", "true")
         url = QUrl("https://geocodage.sitg-lab.ch/api/v2/search")
         url.setQuery(query)
         request = QNetworkRequest(url)
