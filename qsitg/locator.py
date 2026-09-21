@@ -72,7 +72,7 @@ class QsitgGeocoderLocatorFilter(QgsGeocoderLocatorFilter):
         self.geocoder = QsitgGeocoderInterface()
         super().__init__(
             name="SITG",
-            displayName="SITG",
+            displayName="SITG - Service de géocodage",
             prefix="sitg",
             geocoder=self.geocoder,
             canvas=iface.mapCanvas(),
