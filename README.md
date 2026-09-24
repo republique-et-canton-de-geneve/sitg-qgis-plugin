@@ -10,6 +10,7 @@ Fonctionalités:
 - pré-configuration des géoservices **vector.sitg.ge.ch**, **raster.sitg.ge.ch** et **thematic.sitg.ge.ch**
 - support de l'**accès authentifié** via compte GINA/e-Demarches aux géoservices
 - raccourci vers le **portail de données** du SITG et vers le **guide d'utilisation du SITG avec QGIS**
+- intégration du **[service de géocodage](https://geocodage.sitg-lab.ch/a-propos)** dans le localisateur
 
 > [!IMPORTANT]
 > L'utilisation des données du SITG est soumise à [conditions](https://sitg.ge.ch/ressources/conditions-utilisation-donnees). Le niveau d'accès de chaque données est décrit sur le [portail du SITG](https://sitg.ge.ch).
