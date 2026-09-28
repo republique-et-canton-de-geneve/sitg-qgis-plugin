@@ -1,0 +1,144 @@
+publiccodeYmlVersion: 0.5.0
+name: Plugin QGIS SITG
+applicationSuite: QGIS
+url: https://github.com/republique-et-canton-de-geneve/sitg-qgis-plugin
+platforms:
+  - windows
+  - mac
+  - linux
+developmentStatus: stable
+softwareType: addon
+organisation:
+  uri: https://ld.admin.ch/canton/25
+  name: Geneva
+description:
+  en:
+    localisedName: QGIS plugin for the SITG
+    shortDescription: This plugin for QGIS makes it easier to use the services
+      provided by the Canton of Geneva’s Geographic Information System (SITG).
+    longDescription: >-
+      This plugin makes it easier to use the services provided by the Canton of
+      Geneva’s Geographic Information System (SITG) in QGIS.
+
+
+      Features
+
+
+      - Pre-configuration of official SITG basemaps as vector tiles
+
+      - Pre-configuration of the vector.sitg.ge.ch, raster.sitg.ge.ch, and
+      thematic.sitg.ge.ch geoservices
+
+      - Support for authenticated access to geoservices using a GINA/e-Demarches
+      account
+
+      - Shortcuts to the SITG data portal and the SITG guide for using QGIS
+
+
+      Important
+
+
+      The use of SITG data is subject to conditions. The access level for each
+      dataset is described on the SITG portal.
+
+
+      Warning
+
+
+      SITG services are based on proprietary solutions that are not yet fully
+      compatible with QGIS and the open-source geospatial ecosystem.
+
+
+      Various performance and reliability issues are known, and using QGIS as a
+      client to consume SITG geoservices should be considered experimental. The
+      State of Geneva is actively contributing to improving QGIS compatibility
+      and keeps users informed through its newsletter.
+
+
+      For critical work, we recommend using the downloadable datasets available
+      through the SITG portal instead.
+    documentation: https://sitg.ge.ch/ressources/le-sitg-avec-qgis#installer-le-plugin-sitg
+    apiDocumentation: https://github.com/republique-et-canton-de-geneve/sitg-qgis-plugin
+    features:
+      - Pre-configuration of official SITG basemaps as vector tiles
+      - Pre-configuration of the vector.sitg.ge.ch, raster.sitg.ge.ch, and
+        thematic.sitg.ge.ch geoservices
+      - Support for authenticated access to geoservices using a GINA/e-Demarches
+        account
+      - Shortcuts to the SITG data portal and the SITG guide for using QGIS
+    screenshots:
+      - https://github.com/republique-et-canton-de-geneve/sitg-qgis-plugin/blob/main/screenshot.png
+  fr-FR:
+    localisedName: Plugin QGIS SITG
+    shortDescription: Ce plugin pour QGIS permet de faciliter l'utilisation des
+      services du Système d'Informations du Territoire du Canton de Genève
+      (SITG).
+    longDescription: >-
+      Ce plugin permet de faciliter l'utilisation des services du Système
+      d'Informations du Territoire du Canton de Genève (SITG) dans QGIS.
+
+
+      Fonctionalités:
+
+
+      - pré-configuration des fonds de cartes officiels SITG en tuiles
+      vectorielles
+
+      - pré-configuration des géoservices vector.sitg.ge.ch, raster.sitg.ge.ch
+      et thematic.sitg.ge.ch
+
+      - support de l'accès authentifié via compte GINA/e-Demarches aux
+      géoservices
+
+      - raccourci vers le portail de données du SITG et vers le guide
+      d'utilisation du SITG avec QGIS
+
+
+      Important
+
+
+      L'utilisation des données du SITG est soumise à conditions. Le niveau
+      d'accès de chaque données est décrit sur le portail du SITG.
+
+
+      Attention
+
+
+      Les services du SITG sont basés sur des solutions propriétaires qui ne
+      sont encore que partiellement compatibles avec QGIS et l'écosystème
+      géomatique libre.
+
+
+      Divers problèmes de performance ou de fiabilité sont connus et
+      l'utilisation de QGIS comme client pour consommer les geoservices du SITG
+      doit être considérée comme expérimentale. L´État de Genève contribue
+      activement à l'amélioration de la compatibilité de QGIS et tient ses
+      utilisateurs informés via sa newsletter.
+
+
+      Pour les travaux critiques, nous vous recommandons de vous orienter
+      davantage vers les données en téléchargement disponibles depuis le portail
+      du SITG.
+    documentation: https://sitg.ge.ch/ressources/le-sitg-avec-qgis#installer-le-plugin-sitg
+    apiDocumentation: https://github.com/republique-et-canton-de-geneve/sitg-qgis-plugin
+    features:
+      - pré-configuration des fonds de cartes officiels SITG en tuiles
+        vectorielles
+      - pré-configuration des géoservices vector.sitg.ge.ch, raster.sitg.ge.ch
+        et thematic.sitg.ge.ch
+      - support de l'accès authentifié via compte GINA/e-Demarches aux
+        géoservices
+      - raccourci vers le portail de données du SITG et vers le guide
+        d'utilisation du SITG avec QGIS
+legal:
+  license: AGPL-3.0-only
+maintenance:
+  type: internal
+  contacts:
+    - name: Olivier Dalang
+      email: olivier.dalang@etat.ge.ch
+      affiliation: DIT
+localisation:
+  localisationReady: false
+  availableLanguages:
+    - fr
