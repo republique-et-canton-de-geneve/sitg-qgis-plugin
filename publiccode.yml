@@ -67,7 +67,7 @@ description:
         account
       - Shortcuts to the SITG data portal and the SITG guide for using QGIS
     screenshots:
-      - https://github.com/republique-et-canton-de-geneve/sitg-qgis-plugin/blob/main/screenshot.png
+      - https://raw.githubusercontent.com/republique-et-canton-de-geneve/sitg-qgis-plugin/main/screenshot.png
   fr-FR:
     localisedName: Plugin QGIS SITG
     shortDescription: Ce plugin pour QGIS permet de faciliter l'utilisation des
